@@ -1,0 +1,130 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "Users list",
+    "description": "List of users with description",
+    "type" : "object",
+    "properties" : {
+        "dir_save" : {
+            "type" : "object",
+            "properties" : {
+                "path" : {
+                    "type": "string"
+                }
+            }
+        },
+        "dir_build" : {
+            "type" : "object",
+            "properties" : {
+                "path" : {
+                    "type": "string"
+                }
+            }
+        },
+        "dir_isocustom" : {
+            "type" : "object",
+            "properties" : {
+                "path" : {
+                    "type": "string"
+                }
+            }
+        },
+        "download" : {
+            "type" : "object",
+            "properties" : {
+                "XXXXXXXXXX" : {
+                    "type": "object",
+                    "properties" : {
+                        "label" : {
+                            "type" : "string"
+                        },
+                        "url_iso" : {
+                            "type" : "string"
+                        },
+                        "hash" : {
+                            "type" : "object",
+                            "properties" : {
+                                "file" : {
+                                    "type" : "string"
+                                },
+                                "iso_name" : {
+                                    "type" : "string"
+                                }
+                            },
+                            "required": [ "file", "iso_name" ]
+                        }
+                    },
+                    "required": [ "label", "url_iso" ]
+                }
+            }
+        },
+        "custom" :{
+            "type": "object",
+            "properties" : {
+                "XXXXXXXXX" :{
+                    "type": "object",
+                    "required": [ 
+                        "label", 
+                        "iso_base", 
+                        "transfom" ],
+                    "properties" : {
+                        "label" : {
+                            "type" : "string"
+                        },
+                        "iso_base" : {
+                            "type" : "string"
+                        },
+                        "template" : {
+                            "type" : "string"
+                        },
+                        "transfom" : {
+                            "type" : "string"
+                        }
+                    }
+                }
+            }
+        },
+        "virtualbox" : {
+            "type": "object",
+            "properties" : {
+                "recipes": {
+                    "type": "object",
+                    "properties" : {
+                        "XXXXXXXX" : {
+                            "type": "object",
+                            "required": [ 
+                                "os_type", 
+                                "file_disk_type",
+                                "ram",
+                                "vram",
+                                "interface_name",
+                                "interface_type" ],
+                            "properties" : {
+                                "os_type" : {
+                                    "type" : "string"
+                                }, 
+                                "file_disk_type" : {
+                                    "type" : "string"
+                                }, 
+                                "ram" : {
+                                    "type" : "integer"
+                                }, 
+                                "vram" : {
+                                    "type" : "integer"
+                                }, 
+                                "disk_size" : {
+                                    "type" : "integer"
+                                }, 
+                                "interface_name" : {
+                                    "type" : "string"
+                                }, 
+                                "interface_type" : {
+                                    "type" : "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

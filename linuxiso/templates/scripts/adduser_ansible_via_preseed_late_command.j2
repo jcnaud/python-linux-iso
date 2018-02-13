@@ -1,0 +1,23 @@
+{# Create user ansible #}
+
+in-target useradd -m -d /home/{{ ansible_user_name }} -s /bin/bash {{ ansible_user_name }} ;
+in-target mkdir /home/{{ ansible_user_name }}/.ssh ;
+in-target chmod 700 /home/{{ ansible_user_name }}/.ssh ;
+in-target chown -R {{ ansible_user_name }}: /home/{{ ansible_user_name }}/.ssh ;
+
+
+{# Add ansible autorized keys #}
+
+{% for pub_key in ansible_authorized_keys %}
+in-target echo "{{ pub_key }}" >> /home/{{ ansible_user_name }}/.ssh/authorized_keys ;
+{% endfor %}
+
+in-target chmod 600 /home/{{ ansible_user_name }}/.ssh/authorized_keys ;
+in-target chown {{ ansible_user_name }}: /home/{{ ansible_user_name }}/.ssh/authorized_keys ;
+
+
+{# User ansible become sudoer without password #}
+
+in-target apt-get install -y sudo ;
+in-target grep -q '^{{ ansible_user_name }}' /etc/sudoers && sed -i 's/^{{ ansible_user_name }}.*/{{ ansible_user_name }} ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers || echo '{{ ansible_user_name }} ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers ;
+

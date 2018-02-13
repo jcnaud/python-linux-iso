@@ -1,0 +1,69 @@
+
+dir_save:
+  path : "/home/jnaud/var/iso"
+dir_isocustom:
+  path : "/home/jnaud/var/isocustom"
+dir_build :
+  path : "/home/jnaud/var/build"
+download :
+  debian-9.2.1-strech-amd64-netinst.iso :
+    label : Debian 9.2.1 Strech amd64 Netinst
+    url_iso : https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso
+    hash :
+      file : https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/SHA512SUMS
+      iso_name : debian-9.2.1-amd64-netinst.iso
+
+  debian-10-buster-amd64-netinst-testing.iso:
+    label : Debian 10 Buster testing amd64 Netinstall
+    url_iso : https://cdimage.debian.org/cdimage/buster_di_alpha1/amd64/iso-cd/debian-buster-DI-alpha1-amd64-netinst.iso
+  
+  ubuntu-16.04.3-LTS-Xenial_Xerus-amd64-desktop-live.iso:
+    label :  Ubuntu 16.04.3 LTS Xenial_Xerus amd64 desktop live
+    url_iso : https://www.ubuntu.com/download/desktop/thank-you?version=16.04.3&architecture=amd64
+
+  ubuntu-16.04.3-LTS-Xenial_Xerus-amd64-server.iso:
+    label : Ubuntu 16.04.3 LTS Xenial_Xerus amd64 server
+    url_iso : https://www.ubuntu.com/download/server/thank-you?version=16.04.3&architecture=amd64
+  
+  linuxmint-18.2-Sonya-amd64-desktop-cinnamon.iso :
+    label : Linux Mint 18.2 amd64 desktop Cinnamon
+    url_iso : http://mint-mirror.gwendallebihan.net/isos/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso
+
+  kde-18.3-destop-kde.iso :
+    label : Kde 18.3 amd64 destop Kde
+    url_iso : http://www.kubuntu-fr.org/telechargement?action=dl
+
+  centos-7-x86-amd64-desktop.iso :
+    label : CentOS 7 x86_amd64 desktop
+    url_iso : http://miroir.univ-paris13.fr/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1708.iso
+
+  raspbian-9-strech-lite.img :
+    label : Raspbian strech Lite
+    url_iso : https://downloads.raspberrypi.org/raspbian_lite_latest
+
+
+custom :
+  Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso :
+    label : Custom FullAuto Debian 9 Amd64 netinst server
+    template : preseed-Debian-9-strech-amd64-srv.cfg.j2
+    iso_base : debian-9.2.1-strech-amd64-netinst.iso
+    transfom : customDebian9soft
+
+#virtualbox:
+  #disk-dir: '/mnt/data/var/VirtualBox VMs'
+
+virtualbox : 
+  recipes :
+    Debian-amd64-standard:
+      #hostname: 'test debian'
+      os_type : 'Debian_64'     # Id fourni dans la liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
+      file_disk_type : 'vmdk'   # vdi | vmdk
+      ram : 1024              # multiple de x^2 : exemple 1*1024
+      vram : 128              # mémoire video
+      disk_size : 32768       # multiple de x^2 : exemple 8*1024
+
+      # Chemin absolu
+      #cd-iso: 'Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso' # Chemin absolu
+      interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
+      interface_type: 'bridge'
+
