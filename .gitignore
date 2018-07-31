@@ -9,6 +9,7 @@
 
 # Python
 *.py[co]
+__pycache__
 
 ## Packages
 *.egg
@@ -30,6 +31,7 @@ pip-log.txt
 ## Unit test / coverage reports
 .coverage
 .tox
+/.pytest_cache
 
 ## Translations
 *.mo

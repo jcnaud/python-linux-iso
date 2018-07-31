@@ -4,7 +4,7 @@
     "description": "List of users with description",
     "type" : "object",
     "properties" : {
-        "dir_save" : {
+        "dir_input" : {
             "type" : "object",
             "properties" : {
                 "path" : {

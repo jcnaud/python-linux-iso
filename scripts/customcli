@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import os
+import sys
+import argparse
+import logging
+import json
+
+# Local import
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+from linuxiso.custom.core import Custom
+from linuxiso.ressources.tools import setup_logging, load_conf
+
+
+def main(agrs):
+    """Parsing command line options/argument for custom module"""
+    if args:
+        # Manage "verbose" and "quiet" options
+        if args.verbose == 0:
+            logging.basicConfig(level=logging.WARNING)
+        elif args.verbose == 1:
+            logging.basicConfig(level=logging.INFO)
+        elif args.verbose >= 2:
+            logging.basicConfig(level=logging.DEBUG)
+        elif args.quiet:
+            logging.basicConfig(level=logging.NOTSET)
+
+        # Manage "config-file" options
+        conf = load_conf(args.config_file)  # Manage None conf
+        ci = Custom(conf=conf)
+
+        # Manage "list", "create", "delete"
+        if args.list:             # List custom iso/image status
+            result = ci.getIsoStatus()
+            print(json.dumps(result, indent=4))
+        elif args.create:         # Create one custom iso/image
+            ci.create(args.create)
+        elif args.delete:         # Delete one custom iso/image
+            ci.delete(args.delete)
+        else:
+            parser.print_help()
+
+if __name__ == "__main__":
+    """Entry point for command ligne usage (with options/arguments)"""
+
+    parser = argparse.ArgumentParser(description='Program custom iso/image')
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "-l", "--list",
+        help="list custom iso status",
+        action="store_true")
+    group.add_argument(
+        "-c", "--create",
+        help="create custom iso/image",
+        metavar="ISO_NAME")
+    group.add_argument(
+        "-d", "--delete",
+        help="delete custom iso/image",
+        metavar="ISO_NAME")
+
+    parser.add_argument(
+        "-f", "--config-file",
+        help="load configuration file (default: linuxiso/settings.yaml)",
+        metavar="CONF_FILE")
+
+    group_vq = parser.add_mutually_exclusive_group()
+    group_vq.add_argument(
+        "-v", "-vv", "--verbose",
+        help="enable verbosity: -v = INFO, -vv = DEBUG ",
+        action="count",
+        default=0)
+    group_vq.add_argument(
+        "-q", "--quiet",
+        help="quiet mode",
+        action="store_true")
+
+    args = parser.parse_args()
+    main(args)
+
+    # Exemple of comand ligne call:
+    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso
+    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso
+
+    # python custom.py -c Custom-FullAuto-Ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-desktop.iso

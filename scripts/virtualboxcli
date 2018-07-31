@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import os
+import sys
+import argparse
+import logging
+import json
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+
+from linuxiso.virtualbox import Virtualbox
+
+
+def main(agrs):
+    """Parsing comnand line options/arguments"""
+    if args: 
+
+        # Manage "verbose" and "quiet" options
+        if args.verbose == 0:       
+            logging.basicConfig(level=logging.WARNING)
+        elif args.verbose == 1:
+            logging.basicConfig(level=logging.INFO)
+        elif args.verbose >= 2:
+            logging.basicConfig(level=logging.DEBUG)
+        elif args.quiet:
+            logging.basicConfig(level=logging.NOTSET)
+
+        # Manage "config-file" options
+        if args.config_file:
+            vb = Virtualbox(conf_file=args.config_file)
+        else:
+            vb = Virtualbox(conf_file="../linuxiso/settings.yaml")
+
+        # Manage "list", "create", "run" and "delete" options
+        if args.list:             # List custom iso/image status
+            result = vb.get_list_vms()
+            print(json.dumps(result, indent=4))
+        elif args.create:         # Create one VM
+            vb.create(hostname=args.create, 
+                recipe=args.recipe,
+                iso=args.iso)
+        elif args.run:            # Run one existing VM
+            vb.run(args.run)
+        elif args.delete:         # Delete one existing VM
+            vb.delete(args.delete)
+    
+    # logging.basicConfig(level=logging.DEBUG)
+    # #logger = logging.getLogger(__name__)
+
+    # logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+    # #logger.info('Start create virtualbox vm')
+
+    # vi = Virtualbox()
+    
+    # #l_vm = vi.get_list_vms()
+    # #print(l_vm)
+
+    # vi.create_vms(hostname="testdeploy",recipe="Debian-amd64-standard", iso="/home/jnaud/var/isocustom/Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso")
+    # vi.run_vm("testdeploy")
+
+    # #print(vi.get_list_ostypes())
+
+    # #print(vi.get_machine_folder())
+    # #vi.create("test_deb_1","Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso")
+
+
+if __name__ == "__main__":
+    """Entry point for command ligne usage (with options/arguments)"""
+
+
+    parser_c = argparse.ArgumentParser("create",add_help=False)
+    parser_c.add_argument("-i", "--iso", 
+        help="iso/image to mount",
+        metavar="ISO_NAME")
+    parser_c.add_argument("-e", "--recipe", 
+        help="recipe",
+        metavar="RECIPE")
+
+
+    parser = argparse.ArgumentParser(
+        description='Program manage virtualbox VM',
+        parents=[parser_c])
+
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-l", "--list", 
+        help="list curent VMs status", 
+        action="store_true")   
+    group.add_argument("-c", "--create", 
+        help="create new VM (and mount an iso/image)",
+        metavar="VM_NAME")
+    group.add_argument("-r", "--run", 
+        help="run virtualbox VM",
+        metavar="VM_NAME")
+    group.add_argument("-d", "--delete", 
+        help="delete VM",
+        metavar="VM_NAME")
+
+    
+    parser.add_argument("-f", "--config-file", 
+        help="load personnal configuration file (defaut: settings.yaml)",
+        metavar="CONF_FILE")
+
+
+    group_vq = parser.add_mutually_exclusive_group()
+    group_vq.add_argument("-v", "-vv", "--verbose", 
+        help="enable verbosity: -v = INFO, -vv = DEBUG ", 
+        action="count",
+        default=0)
+    group_vq.add_argument("-q", "--quiet", 
+        help="quiet mode", 
+        action="store_true")
+    
+
+    ## TODO , if no option specified, print help
+    args = parser.parse_args()
+    main(args)
+    
+
+    # Exemple of comand ligne call:
+    #   python virtualbox.py -l
+    #   python virtualbox.py -c testdeploy -e Debian-amd64-standard -i /home/jnaud/var/isocustom/Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+    #   python virtualbox.py -r testdeploy
+
+    #   python virtualbox.py -c proliant -e Debian-amd64-raid -i /home/jnaud/var/isocustom/Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso
+
+    # python virtualbox.py -c ubuntutest -e Debian-amd64-standard -i /home/jnaud/var/isocustom/Custom-FullAuto-Ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-desktop.iso
+    # python virtualbox.py -c ubuntutest -e Debian-amd64-standard -i /home/jnaud/var/isocustom/Custom-FullAuto-Ubuntu-17-Artful_Aardvark-amd64-desktop.iso

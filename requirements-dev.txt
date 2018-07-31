@@ -1,0 +1,11 @@
+pyyaml
+schema
+requests
+pyhttp
+python-json-logger
+
+# Documentaiton
+sphinx
+sphinx_rtd_theme
+pytest
+requests_mock

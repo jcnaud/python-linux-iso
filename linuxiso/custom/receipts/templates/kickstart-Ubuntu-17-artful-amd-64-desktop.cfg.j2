@@ -1,0 +1,81 @@
+
+#System language
+lang fr_FR.UTF-8
+
+#Language modules to install
+# langsupport fr_FR.UTF-8
+ 
+#System keyboard
+keyboard fr_oss
+
+#System mouse
+mouse
+
+#System timezone
+timezone Europe/Paris
+
+#Root password
+rootpw tititoto
+
+#Initial user
+user jnaud --fullname "jnaud" --password=tititoto
+#user jnaud --fullname "jnaud" --iscrypted --password xxxxxxxxxxxxxxxxxxxxx
+
+#Reboot after installation
+reboot --eject
+
+#Use text mode install
+text
+
+#Install OS instead of upgrade
+install
+
+#System bootloader configuration
+bootloader --location=mbr 
+
+#Clear the Master Boot Record
+# zerombr yes
+ 
+#Partition clearing information
+clearpart --all --initlabel 
+
+#Disk partitioning information
+#ignoredisk --only-use=sda
+part / --fstype ext4 --size 1024 --grow 
+part swap --size 2048 
+# part /home --fstype ext4 --size 1 --grow 
+
+#System authorization infomation
+auth --useshadow --enablemd5 
+
+#Network information
+network --bootproto=dhcp --device=eth0
+
+#Firewall configuration
+firewall --disabled 
+
+# Additional packages to install
+%packages
+ca-certificates
+openssl
+python
+openssh-server
+vim
+ubuntu-desktop
+unity
+
+
+%post --nochroot
+# Reprise de la définition des variables non renseignées car non conservées depuis /tmp/
+machine={{ hostname }}
+
+# # Suppression des paquets non souhaités
+# chroot /target apt-get -y remove empathy-common
+# chroot /target apt-get -y remove gbrainy
+# chroot /target apt-get -y remove gnome-games-common
+# chroot /target apt-get -y remove gwibber-service
+# chroot /target apt-get -y remove pidgin
+# chroot /target apt-get -y remove pitivi
+# chroot /target apt-get -y remove transmission-common
+
+# # Renommage de la machine

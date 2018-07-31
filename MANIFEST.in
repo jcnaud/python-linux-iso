@@ -1,0 +1,18 @@
+# Informational files
+#TODO include README.rst
+include LICENSE.txt
+
+# Include docs and tests but not docs/build
+graft docs
+prune docs/build
+graft tests
+
+# Exclude any compile Python files
+global-exclude *.pyc
+
+# Setup-related things
+#TODO include pavement.py
+include requirements-dev.txt
+include requirements.txt
+#TODO include setup.py
+#TODO include tox.ini
