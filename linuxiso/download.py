@@ -92,7 +92,7 @@ class Download(object):
         if not os.path.exists(file_iso):
             logging.info("Download : "+file_iso)
             # urllib.request.urlretrieve(url_iso, file_iso)
-            rep = requests.get(url_iso, stream=True)
+            rep = requests.get(url_iso, stream=True, allow_redirects=True)
             with open(file_iso, 'wb') as fd:
                 for chunk in rep.iter_content(chunk_size=128):
                     fd.write(chunk)
@@ -107,7 +107,8 @@ class Download(object):
     def remove(self, iso):
         """ Remove one iso"""
         file_iso = self.conf['dir_input']['path']+os.sep+iso
-        os.remove(file_iso)
+        if os.path.isfile(file_iso):
+            os.remove(file_iso)
 
     def remove_all(self):
         """ Remove all iso"""
