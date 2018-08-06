@@ -33,22 +33,31 @@ class Custom(object):
     def __init__(self, conf=None):
         self.conf = conf
 
-    def getIsoStatus(self):
+    def list(self):
+        """Get list of cusotm iso."""
+        return sorted(list(self.conf['custom'].keys()))
+
+    def status(self, iso):
         """
         Check custom iso/image status
         return : dict with status
         """
-        iso_status = {}
-        l_iso = self.conf['custom']
         dir_isocustom = self.conf['dir_isocustom']['path']
 
-        for i in l_iso.keys():
-            if os.path.isfile(dir_isocustom+os.sep+i):
-                iso_status[i] = {"file" : "Exist" }
-            else:
-                iso_status[i] = {"file" : "Not exist" }
+        if os.path.isfile(dir_isocustom+os.sep+iso):
+            return {'is_exist': True}
+        else:
+            return {'is_exist': False}
 
-        return iso_status
+    def status_all(self):
+        """
+        Check custom iso/image status
+        return : dict with status
+        """
+        result = {}
+        for iso in self.conf['custom'].keys():
+            result[iso] = self.status(iso)
+        return result
 
     def create(self, file_iso, context):
         """
@@ -82,10 +91,10 @@ class Custom(object):
                 custom_debian_9(iso_input, iso_ouput, dir_build_tmp, context)
             elif self.conf['custom'][file_iso]['transfom'] == 'customDebian9soft':
                 custom_debian_9_soft(iso_input, iso_ouput, dir_build_tmp, context)
-            elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu16soft':
-                custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build_tmp, context)
-            elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu17soft':
-                custom_ubuntu_17_soft(iso_input, iso_ouput, dir_build_tmp, context)
+            # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu16soft':
+            #     custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build_tmp, context)
+            # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu17soft':
+            #     custom_ubuntu_17_soft(iso_input, iso_ouput, dir_build_tmp, context)
             else:
                 assert True, "Transformation not know"
         except Exception as e:

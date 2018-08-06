@@ -6,11 +6,13 @@ import sys
 import argparse
 import logging
 import json
+import textwrap
 
 # Local import
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+DIR_PWD = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(DIR_PWD, ".."))
 from linuxiso.custom.core import Custom
-from linuxiso.ressources.tools import setup_logging, load_conf
+from linuxiso.ressources.tools import load_conf
 
 
 def main(agrs):
@@ -28,42 +30,75 @@ def main(agrs):
 
         # Manage "config-file" options
         conf = load_conf(args.config_file)  # Manage None conf
-        ci = Custom(conf=conf)
+        custom = Custom(conf=conf)
 
         # Manage "list", "create", "delete"
         if args.list:             # List custom iso/image status
-            result = ci.getIsoStatus()
-            print(json.dumps(result, indent=4))
+            result = custom.list()
+            print(json.dumps(result, indent=4, sort_keys=True))
+        elif args.status:         # Get status of one custom iso
+            result = custom.status(args.status)
+            print(json.dumps(result, indent=4, sort_keys=True))
+        elif args.status_all:     # Get status of all custom iso
+            result = custom.status_all()
+            print(json.dumps(result, indent=4, sort_keys=True))
         elif args.create:         # Create one custom iso/image
-            ci.create(args.create)
-        elif args.delete:         # Delete one custom iso/image
-            ci.delete(args.delete)
+            custom.create(args.create)
+        elif args.remove:         # Remove one customiso/image
+            custom.remove(args.remove)
+        elif args.remove_all:     # Remove all custom iso/image
+            custom.remove_all()
         else:
             parser.print_help()
+
 
 if __name__ == "__main__":
     """Entry point for command ligne usage (with options/arguments)"""
 
     parser = argparse.ArgumentParser(description='Program custom iso/image')
 
+    parser = argparse.ArgumentParser(
+        prog='Customcli',
+        description='Program custom iso/image',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent('''\
+            Example of standard usage:
+
+                ./customcli --list
+                ./customcli --status Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+                ./customcli --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+            '''))
+
     group = parser.add_mutually_exclusive_group()
+    parser.add_argument(
+        "-f", "--config-file",
+        help="load personnal configuration file (defaut: settings.yaml)",
+        metavar="CONF_FILE")
+
     group.add_argument(
         "-l", "--list",
         help="list custom iso status",
+        action="store_true")
+    group.add_argument(
+        "-s", "--status",
+        help="status of the custom iso/image",
+        metavar="ISO_NAME")
+    group.add_argument(
+        "-S", "--status-all",
+        help="status of all custom iso/image",
         action="store_true")
     group.add_argument(
         "-c", "--create",
         help="create custom iso/image",
         metavar="ISO_NAME")
     group.add_argument(
-        "-d", "--delete",
-        help="delete custom iso/image",
+        "-r", "--remove",
+        help="remove the custom iso/image",
         metavar="ISO_NAME")
-
-    parser.add_argument(
-        "-f", "--config-file",
-        help="load configuration file (default: linuxiso/settings.yaml)",
-        metavar="CONF_FILE")
+    group.add_argument(
+        "-k", "--remove-all",
+        help="remove all custom iso/image",
+        action="store_true")
 
     group_vq = parser.add_mutually_exclusive_group()
     group_vq.add_argument(
@@ -78,10 +113,3 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
-
-    # Exemple of comand ligne call:
-    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
-    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso
-    #   ./customcli -c Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso
-
-    # python custom.py -c Custom-FullAuto-Ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-desktop.iso

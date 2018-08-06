@@ -35,20 +35,20 @@ def main(args):
 
         # Manage options "list", "download", "download-all",
         #   "remove" and "remove-all"
-        if args.list:               # List iso/image status
+        if args.list:             # List iso/image status
             result = download.list()
             print(json.dumps(result, indent=4, sort_keys=True))
         elif args.status:         # Get status of one iso
             result = download.status(args.status)
             print(json.dumps(result, indent=4, sort_keys=True))
-        elif args.status_all:         # Get status of all iso
+        elif args.status_all:     # Get status of all iso
             result = download.status_all()
             print(json.dumps(result, indent=4, sort_keys=True))
-        elif args.download:         # Download one iso/image
+        elif args.download:       # Download one iso/image
             download.download(args.download)
-        elif args.download_all:     # Download all iso/image
+        elif args.download_all:   # Download all iso/image
             download.download_all()
-        elif args.remove:           # Remove one iso/image
+        elif args.remove:         # Remove one iso/image
             download.remove(args.remove)
         elif args.remove_all:     # Remove all iso/image
             download.remove_all()
