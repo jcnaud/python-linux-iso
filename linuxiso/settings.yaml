@@ -44,6 +44,10 @@ download :
   raspbian-9-strech-lite.img :
     label : Raspbian strech Lite
     url_iso : https://downloads.raspberrypi.org/raspbian_lite_latest
+    hash:
+      type: sha256
+      sum: 3271b244734286d99aeba8fa043b6634cad488d211583814a2018fc14fdca313
+
 
 custom :
   Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso :

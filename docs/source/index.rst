@@ -12,7 +12,6 @@ Contents:
     :maxdepth: 1
 
     pages/intro
-    pages/linuxiso
     pages/download
     pages/custom
     pages/virtualbox
@@ -25,4 +24,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
