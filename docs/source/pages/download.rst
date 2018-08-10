@@ -1,8 +1,8 @@
 Download
-===============
+========
 
 .. autoclass:: download::Download
     :members:
+    :undoc-members:
     :show-inheritance:
-    :noindex:    
-
+    :inherited-members:

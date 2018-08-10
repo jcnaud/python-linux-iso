@@ -10,7 +10,22 @@ import logging         # for logging mode/level
 
 class Download(object):
     """
-    Class manage download and verify iso
+    Class manage download and verify iso.
+
+    You need to provide configuration with all info of iso managed.
+
+    The typical use is:
+     - chose a config that containt all info about iso
+     - **list** iso managed
+     - get the **status** of one or all iso (**status_all**)
+     - do operation on iso like **download**, **download_all**,
+       **remove** or **remove_all**
+
+    >>> download = Download(conf)
+    >>> download.list()
+    >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
+    >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
+
     """
 
     def __init__(self, conf=None):
@@ -18,14 +33,39 @@ class Download(object):
         self.conf = conf
 
     def list(self):
-        """Get list of iso managed."""
+        """Get list of iso managed.
+
+        >>> download.list()
+        [
+            "centos-7-x86-amd64-desktop.iso",
+            "debian-10-buster-amd64-netinst-testing.iso",
+            "debian-9.5.0-strech-amd64-netinst.iso",
+            "kde-18.3-destop-kde.iso",
+            "linuxmint-18.2-Sonya-amd64-desktop-cinnamon.iso",
+            "raspbian-9-strech-lite.img",
+            "ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-desktop-live.iso",
+            "ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-server.iso",
+            "ubuntu-17.10.1-Artful_Aardvark-amd64-server.iso"
+        ]
+
+        """
         return sorted(list(self.conf['download'].keys()))
 
     def status(self, iso):
         """Get one iso status.
 
-        Test if the url to download exist, if the iso already downloaded
-        and if the checksum is good.
+        Test :
+         - if the url to download the iso exist
+         - if the iso already downloaded
+         - if the checksum is good (if the iso is download)
+
+        >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
+        {
+            "is_downloaded": true,
+            "is_hash_valid": true,
+            "is_url_exist": true
+        }
+
         """
         iso_params = self.conf['download'][iso]
         url = iso_params['url_iso']
@@ -60,6 +100,8 @@ class Download(object):
 
         Test if the url to download exist, if the iso already downloaded
         and if the checksum is good
+
+        >>> download.status_all()
         """
 
         l_iso = self.conf['download']
@@ -70,7 +112,8 @@ class Download(object):
 
     def _check_url(self, url):
         """ Check if url exist
-        return bool : """
+        return bool :
+        """
         try:
             reponse = requests.head(url, allow_redirects=True)
             if reponse.status_code == 200:
@@ -81,7 +124,10 @@ class Download(object):
         return False
 
     def download(self, iso):
-        """Download one iso"""
+        """Download one iso
+
+        >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
+        """
         url_iso = self.conf['download'][iso]['url_iso']
         dir_input = self.conf['dir_input']['path']
         file_iso = dir_input+os.sep+iso
@@ -100,17 +146,26 @@ class Download(object):
             logging.info("File exist, do nothing because already downloaded")
 
     def download_all(self):
-        """ Download all iso"""
+        """ Download all iso
+
+        >>> download.download_all()
+        """
         for i in self.conf['download'].keys():
             self.download(i)
 
     def remove(self, iso):
-        """ Remove one iso"""
+        """ Remove one iso
+
+        >>> download.remove("debian-9.5.0-strech-amd64-netinst.iso")
+        """
         file_iso = self.conf['dir_input']['path']+os.sep+iso
         if os.path.isfile(file_iso):
             os.remove(file_iso)
 
     def remove_all(self):
-        """ Remove all iso"""
+        """ Remove all iso
+
+        >>> download.remove_all()
+        """
         for iso in self.conf['download'].keys():
             self.remove(iso)
