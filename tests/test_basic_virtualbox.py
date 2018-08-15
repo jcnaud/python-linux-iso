@@ -67,4 +67,31 @@ def test_list_vms_with_custom_configuration(custom_config):
     virtualbox = Virtualbox(conf=conf)
     result = virtualbox.list_vms()
 
+    assert result
     assert isinstance(result, dict)
+
+
+def test_list_ostypes(custom_config):
+    conf = load_conf(confDict=custom_config)  # Custom configuration
+    virtualbox = Virtualbox(conf=conf)
+    result = virtualbox.list_ostypes()
+
+    assert result
+    assert isinstance(result, dict)
+
+
+def test_get_machine_folder(custom_config):
+    conf = load_conf(confDict=custom_config)  # Custom configuration
+    virtualbox = Virtualbox(conf=conf)
+    result = virtualbox.get_machine_folder()
+
+    assert os.path.isdir(result)
+
+
+def test_get_machine_folder(custom_config):
+    conf = load_conf(confDict=custom_config)  # Custom configuration
+    virtualbox = Virtualbox(conf=conf)
+    result = virtualbox.get_machine_folder()
+
+    assert os.path.isdir(result)
+    

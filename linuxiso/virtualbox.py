@@ -121,53 +121,86 @@ class Virtualbox(object):
         os.mkdir(dir_vm+os.sep+hostname)
         os.chdir(dir_vm+os.sep+hostname)
 
-        # disk_size
+        # Create vm
+        run_cmd(
+            'VBoxManage createvm '
+            '--name "'+hostname+'" '
+            '--ostype "'+os_type+'" '  # Ex: "Debian_64"
+            '--register')
 
-        #       VBoxManage createvm --name test_debian_manuel     --ostype "Debian_64"           --register
-        run_cmd('VBoxManage createvm --name "'+hostname+'" --ostype "'+os_type+'" --register')
+        # Add SATA controller
+        run_cmd(
+            'VBoxManage storagectl "'+hostname+'" '
+            '--name "SATA Controller" '
+            '--add sata '
+            '--controller IntelAHCI')
 
-        #       VBoxManage storagectl "test_debian_manuel"   --name "SATA Controller" --add sata --controller IntelAHCI
-        run_cmd('VBoxManage storagectl "'+hostname+'" --name "SATA Controller" --add sata --controller IntelAHCI')
+        # Add disks SATA controller
+        if isinstance(disk_size, int):
+            disk_size = [disk_size]
+        run_cmd(
+            'VBoxManage storagectl '+hostname+' '
+            '--name "SATA Controller" '
+            '--portcount '+str(len(disk_size)))  # Number of disque
 
-        if not isinstance(disk_size, list):
-            run_cmd('VBoxManage storagectl '+hostname+' --name "SATA Controller" --portcount 1')
-            #       VBoxManage createhd --filename "test_debian_manuel.vmdk"         --size 32768
-            run_cmd('VBoxManage createhd --filename "'+hostname+'.'+file_disk_type+'" --size '+str(disk_size))
+        i = 0
+        for on_disk_size in disk_size:
+            ds = str(on_disk_size)
+            it = str(i)
+            disk_name = hostname+'_'+it+'.'+file_disk_type
 
-            #       VBoxManage storageattach "test_debian_manuel"   --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium test_debian_manuel.vmdk
-            run_cmd('VBoxManage storageattach "'+hostname+'" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "'+hostname+'.'+file_disk_type+'"')
-        else:
+            # Create one disk
+            run_cmd(
+                'VBoxManage createhd '
+                '--filename "'+disk_name+'" '  # Ex:test_0.vmdk
+                '--size '+ds)  # Disk size in Mo
 
-            run_cmd('VBoxManage storagectl '+hostname+' --name "SATA Controller" --portcount '+str(len(disk_size)))
-            i = 0
-            for on_disk_size in disk_size:
-                ds = str(on_disk_size)
-                it = str(i)
-                disk_name = hostname+'_'+it+'.'+file_disk_type
-                #       VBoxManage createhd --filename "test_debian_manuel.vmdk"         --size 32768
-                run_cmd('VBoxManage createhd --filename "'+disk_name+'" --size '+ds)
+            # Attach one disk to SATA controller
+            run_cmd(
+                'VBoxManage storageattach "'+hostname+'" '
+                '--storagectl "SATA Controller" '
+                '--port '+it+' '
+                '--device 0 '
+                '--type hdd '
+                '--medium "'+disk_name+'"')  # Ex:test_0.vmdk
+            i += 1
 
-                #       VBoxManage storageattach "test_debian_manuel"   --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium test_debian_manuel.vmdk
-                run_cmd('VBoxManage storageattach "'+hostname \
-                +'" --storagectl "SATA Controller" --port '+it+' --device 0 --type hdd --medium "'+disk_name+'"')
+        # Add IDE Controller
+        run_cmd(
+            'VBoxManage storagectl "'+hostname+'" '
+            '--name "IDE Controller" '
+            '--add ide')
 
-                i+=1
+        # Mount the iso to the IDE controller
+        run_cmd(
+            'VBoxManage storageattach "'+hostname+'" '
+            '--storagectl "IDE Controller" '
+            '--port 0 '
+            '--device 0 '
+            '--type dvddrive '
+            '--medium "'+iso+'"')
 
-        # VBoxManage storagectl "test_debian_manuel"   --name "IDE Controller" --add ide
-        run_cmd('VBoxManage storagectl "'+hostname+'" --name "IDE Controller" --add ide')
+        # Enable Input/Output (mouse, keyboard, ...)
+        run_cmd(
+            'VBoxManage modifyvm  "'+hostname+'" '
+            '--ioapic on')
 
-        #       VBoxManage storageattach "test_debian_manuel"   --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium /mnt2/data/var/debian-9.1.0-amd64-netinst.iso
-        run_cmd('VBoxManage storageattach "'+hostname+'" --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "'+iso+'"')
+        # Define boot order
+        run_cmd(
+            'VBoxManage modifyvm  "'+hostname+'" '
+            '--boot1 dvd '
+            '--boot2 disk '
+            '--boot3 none '
+            '--boot4 none')
 
-        #       VBoxManage modifyvm  "test_debian_manuel"   --ioapic on
-        run_cmd('VBoxManage modifyvm  "'+hostname+'" --ioapic on')
+        # Define RAM and VRAM(video)
+        run_cmd(
+            'VBoxManage modifyvm  "'+hostname+'" '
+            '--memory '+ram+' '
+            '--vram '+vram)
 
-        #       VBoxManage modifyvm  "test_debian_manuel"   --boot1 dvd --boot2 disk --boot3 none --boot4 none
-        run_cmd('VBoxManage modifyvm  "'+hostname+'" --boot1 dvd --boot2 disk --boot3 none --boot4 none')
-
-
-        #       VBoxManage modifyvm  "test_debian_manuel"   --memory 1024 --vram 128
-        run_cmd('VBoxManage modifyvm  "'+hostname+'" --memory '+ram+' --vram '+vram)
-
-        #       VBoxManage modifyvm  "test_debian_manuel"   --nic1 bridged --bridgeadapter1 enp3s0
-        run_cmd('VBoxManage modifyvm  "'+hostname+'" --nic1 bridged --bridgeadapter1 '+interface_name)
+        # Connect network bridge interface
+        run_cmd(
+            'VBoxManage modifyvm  "'+hostname+'" '
+            '--nic1 bridged '
+            '--bridgeadapter1 '+interface_name)
