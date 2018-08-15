@@ -15,13 +15,26 @@ from linuxiso.ressources.tools import run_cmd
 class Virtualbox(object):
     """
     Class manage virtualbox with VBoxManage command
+
+    The typical use is:
+     - chose a config that containt all info about iso
+     - **list** iso managed
+     - get the **status** of one or all iso (**status_all**)
+     - do operation on iso like **download**, **download_all**,
+       **remove** or **remove_all**
+
+    >>> virtualbox = Virtualbox(conf)
+    >>> virtualbox.list_vms()
+    >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
+    >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
+
     """
 
     def __init__(self, conf=None):
         self.conf = conf
 
     @staticmethod
-    def get_list_vms():
+    def list_vms():
         """
         Get list vms
         return l_vm : dict result
@@ -41,7 +54,7 @@ class Virtualbox(object):
         return l_vm
 
     @staticmethod
-    def get_list_ostypes():
+    def list_ostypes():
         """
         Get list ostypes
         return l_ostypes : dict result
@@ -83,7 +96,7 @@ class Virtualbox(object):
     def create(self, hostname, recipe, iso):
         """Create virtualbox vm"""
         logging.info('Create virtualbox vm')
-        l_vm = self.get_list_vms()
+        l_vm = self.list_vms()
 
         assert hostname not in l_vm.keys(), "Error : la vm '"+hostname+"' existe déjà"
 

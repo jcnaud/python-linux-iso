@@ -23,7 +23,8 @@ import tempfile
 
 # Local Import
 from linuxiso.ressources.tools import run_cmd
-from linuxiso.custom.receipts.debian_9 import (custom_debian_9,
+from linuxiso.custom.receipts.debian_9 import (
+    custom_debian_9,
     custom_debian_9_soft)
 
 
@@ -81,7 +82,7 @@ class Custom(object):
         dir_build_tmp = tempfile.mkdtemp(dir=dir_build)
 
 
-        (iso_input, iso_ouput, dir_build_tmp, context)
+        # (iso_input, iso_ouput, dir_build_tmp, context)
 
         # Clean Build directory "Dangerous"
         #if not os.path.isdir(dir_build):
@@ -100,24 +101,29 @@ class Custom(object):
         except Exception as e:
             raise Exception(e)
         finally:
-            # == Big clean ==
+            # Clean the build directory
             if os.path.isdir(dir_build):
-                #print('rm -r '+dir_build)
                 run_cmd('rm -r '+dir_build)
 
-    def delete(self, file_iso):
+    def remove(self, iso):
         """
         Delete custom iso/image from a other normal iso
         params file_iso : Name iso used
-        """
-        dir_isocustom = self.conf['dir_isocustom']['path']
-        path_file = dir_isocustom+os.sep+file_iso
 
-        if os.path.isfile(path_file):
-            logging.info("Delete: "+path_file)
-            os.remove(path_file)
-        else:
-            logging.warning("Iso "+path_file+" not exist. Nothing to delete")
+        >>> custom.remove("Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso")
+        """
+        file_iso = self.conf['dir_isocustom']['path']+os.sep+iso
+
+        if os.path.isfile(file_iso):
+            os.remove(file_iso)
+
+    def remove_all(self):
+        """ Remove all iso
+
+        >>> download.remove_all()
+        """
+        for iso in self.conf['download'].keys():
+            self.remove(iso)
 
 
     @staticmethod

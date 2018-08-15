@@ -1,7 +1,8 @@
 Custom
 ======
 
-.. automodule:: custom
+.. autoclass:: linuxiso.custom.core::Custom
     :members:
+    :undoc-members:
     :show-inheritance:
-    :noindex:
+    :inherited-members:

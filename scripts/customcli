@@ -32,7 +32,7 @@ def main(agrs):
         conf = load_conf(args.config_file)  # Manage None conf
         custom = Custom(conf=conf)
 
-        # Manage "list", "create", "delete"
+        # Manage "list", "status", ...
         if args.list:             # List custom iso/image status
             result = custom.list()
             print(json.dumps(result, indent=4, sort_keys=True))
@@ -42,8 +42,12 @@ def main(agrs):
         elif args.status_all:     # Get status of all custom iso
             result = custom.status_all()
             print(json.dumps(result, indent=4, sort_keys=True))
-        elif args.create:         # Create one custom iso/image
-            custom.create(args.create)
+        # elif args.create:         # Create one custom iso/image
+        #     if args.context:
+        #         context = yaml.load(args.context)
+        #         custom.create(args.create, context)
+        #     else:
+        #         print('no context specidied')
         elif args.remove:         # Remove one customiso/image
             custom.remove(args.remove)
         elif args.remove_all:     # Remove all custom iso/image
@@ -57,17 +61,23 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Program custom iso/image')
 
+    epilog = textwrap.dedent('''\
+        Example of standard usage:
+
+            ./customcli --list
+            ./customcli --status Custom-FullAuto-Debian-9-strech-amd64-\
+netinst-server.iso
+            ./customcli --create Custom-FullAuto-Debian-9-strech-amd64-\
+netinst-server.iso
+                --context context.yaml
+
+        ''')
+
     parser = argparse.ArgumentParser(
         prog='Customcli',
         description='Program custom iso/image',
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=textwrap.dedent('''\
-            Example of standard usage:
-
-                ./customcli --list
-                ./customcli --status Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
-                ./customcli --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
-            '''))
+        epilog=epilog)
 
     group = parser.add_mutually_exclusive_group()
     parser.add_argument(
@@ -87,10 +97,14 @@ if __name__ == "__main__":
         "-S", "--status-all",
         help="status of all custom iso/image",
         action="store_true")
+    # group.add_argument(
+    #     "-c", "--create",
+    #     help="create custom iso/image",
+    #     metavar="ISO_NAME")
     group.add_argument(
-        "-c", "--create",
-        help="create custom iso/image",
-        metavar="ISO_NAME")
+        "-t", "--context",
+        help="specify context for the creation",
+        metavar="CONTEXT_FILE")
     group.add_argument(
         "-r", "--remove",
         help="remove the custom iso/image",
@@ -113,3 +127,27 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
+
+# TODO: option s create and context
+#
+# class CreateAction(argparse.Action):
+#     def __call__(self, parser, namespace, values, option_string=None):
+#         if len(namespace.passwords) < len(namespace.users):
+#             parser.error('Missing context')
+#         else:
+#             namespace.users.append(values)
+#
+#
+# class ContextAction(argparse.Action):
+#     def __call__(self, parser, namespace, values, option_string=None):
+#         if len(namespace.users) <= len(namespace.passwords):
+#             parser.error('Missing iso (create)')
+#         else:
+#             namespace.passwords.append(values)
+#
+#
+# parser = argparse.ArgumentParser()
+#
+# parser.add_argument('--user', dest='users', default=[], action=UserAction, required=True)
+#
+# print(parser.parse_args())
