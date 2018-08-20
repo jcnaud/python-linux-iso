@@ -47,8 +47,8 @@ def main(agrs):
                 iso=args.iso)
         elif args.run:            # Run one existing VM
             virtualbox.run(args.run)
-        elif args.delete:         # Delete one existing VM
-            virtualbox.delete(args.delete)
+        elif args.remove:         # Remoce one existing VM
+            virtualbox.remove(args.remove)
 
 
 if __name__ == "__main__":
@@ -91,12 +91,12 @@ if __name__ == "__main__":
     group.add_argument("-c", "--create",
         help="create new VM (and mount an iso/image)",
         metavar="VM_NAME")
-    group.add_argument("-r", "--run",
+    group.add_argument("-x", "--run",
         help="run virtualbox VM",
         metavar="VM_NAME")
-    group.add_argument("-d", "--delete",
+    group.add_argument("-r", "--remove",
         help="delete VM",
-        metavar="VM_NAME")
+        metavar="VM_NAME_OR_UID")
 
 
     parser.add_argument("-f", "--config-file",

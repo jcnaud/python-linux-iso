@@ -5,6 +5,7 @@ import os
 import sys
 import pytest
 import pyroute2
+import uuid
 
 try:
     # Package Import
@@ -54,7 +55,7 @@ def custom_config(tmpdir):
                     'vram': 128,             # video memory
                     'disk_size': 32768,      # multiple of x^2 : example 8*1024
                     'interface_name': default_iface,  # network interface used
-                    'interface_type': 'bridge'
+                    'interface_type': 'bridged'
                 }
             }
         }
@@ -68,7 +69,7 @@ def test_list_vms_with_custom_configuration(custom_config):
     result = virtualbox.list_vms()
 
     assert result
-    assert isinstance(result, dict)
+    assert isinstance(result, list)
 
 
 def test_list_ostypes(custom_config):
@@ -88,10 +89,13 @@ def test_get_machine_folder(custom_config):
     assert os.path.isdir(result)
 
 
-def test_get_machine_folder(custom_config):
+def test_create_and_remove(custom_config):
     conf = load_conf(confDict=custom_config)  # Custom configuration
     virtualbox = Virtualbox(conf=conf)
-    result = virtualbox.get_machine_folder()
+    hostname = 'test_'+str(uuid.uuid4())
 
-    assert os.path.isdir(result)
-    
+    virtualbox.create(
+        hostname=hostname,
+        recipe='Debian-amd64-standard')
+
+    virtualbox.remove(hostname)

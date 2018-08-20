@@ -90,7 +90,7 @@ virtualbox :
       # Chemin absolu
       #cd-iso: 'Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso' # Chemin absolu
       interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
-      interface_type: 'bridge'
+      interface_type: 'bridged'    # bridged | ...
 
     Debian-amd64-raid:
         #hostname: 'test debian'
@@ -103,4 +103,4 @@ virtualbox :
         # Chemin absolu
         #cd-iso: 'Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso' # Chemin absolu
         interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
-        interface_type: 'bridge'
+        interface_type: 'bridged'    # bridged | ...

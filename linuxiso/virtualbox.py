@@ -41,15 +41,17 @@ class Virtualbox(object):
         """
         logging.info('Get list vms')
         # == Command
-        l_vm_raw = run_cmd('VBoxManage list vms ')
-        l_vm = {}
+        l_vm_raw = run_cmd('VBoxManage list vms')
+        l_vm = []
 
         # == Extract information with RegEX
         regex = r"^\"(?P<hostname>[\w ]+)\" +\{(?P<id>[0-9a-f-]+)\}"
         for ligne in l_vm_raw.split('\n'):
             m = re.search(regex, ligne)
             if m:
-                l_vm[m.group('hostname')] = m.group('id')
+                l_vm.append({
+                    'name': m.group('hostname'),
+                    'uid': m.group('id')})
 
         return l_vm
 
@@ -65,7 +67,7 @@ class Virtualbox(object):
         l_ostypes = {}
 
         logging.debug('Extract information with RegEX')
-        m_iter =re.finditer(r"ID:\s+(?P<id>\w*)\nDescription:\s+(?P<description>.*)\nFamily ID:\s+(?P<family_id>.*)\nFamily Desc:\s+(?P<family_desc>.*)\n64 bit:\s+(?P<b_64_bit>.*)",l_ostypes_raw,re.MULTILINE)
+        m_iter = re.finditer(r"ID:\s+(?P<id>\w*)\nDescription:\s+(?P<description>.*)\nFamily ID:\s+(?P<family_id>.*)\nFamily Desc:\s+(?P<family_desc>.*)\n64 bit:\s+(?P<b_64_bit>.*)",l_ostypes_raw,re.MULTILINE)
 
         for match in m_iter:
             l_ostypes[match.group("id")] = {
@@ -93,27 +95,29 @@ class Virtualbox(object):
         logging.info('Run existing vm')
         run_cmd("VBoxManage startvm "+hostname)
 
-    def create(self, hostname, recipe, iso):
+    def create(self, hostname, recipe, iso=None):
         """Create virtualbox vm"""
         logging.info('Create virtualbox vm')
         l_vm = self.list_vms()
 
-        assert hostname not in l_vm.keys(), "Error : la vm '"+hostname+"' existe déjà"
+        isexist = [x['name'] for x in l_vm if hostname == x['name']]
+        assert isexist == [], "Error : la vm '"+hostname+"' existe déjà"
 
         assert recipe in self.conf['virtualbox']['recipes'].keys(), "Error : la recipe '"+recipe+"' n'existe pas"
 
         #        dir1 = conf['disk-dir']+'/'+conf['hostname']
         #assert(not os.path.exists(dir1)), "Le dossier "+dir1+" existe déjà !"
 
-        dir_iso = self.conf['dir_input']['path']
-        dir_isocustom  = self.conf['dir_isocustom']['path']
-        os_type = self.conf['virtualbox']['recipes'][recipe]['os_type']
-        file_disk_type = self.conf['virtualbox']['recipes'][recipe]['file_disk_type']
-        ram = str(self.conf['virtualbox']['recipes'][recipe]['ram'])
-        vram = str(self.conf['virtualbox']['recipes'][recipe]['vram'])
-        disk_size = self.conf['virtualbox']['recipes'][recipe]['disk_size']
-        interface_name = self.conf['virtualbox']['recipes'][recipe]['interface_name']
-        interface_type = self.conf['virtualbox']['recipes'][recipe]['interface_type']
+        # dir_iso = self.conf['dir_input']['path']
+        # dir_isocustom  = self.conf['dir_isocustom']['path']
+        recipe = self.conf['virtualbox']['recipes'][recipe]
+        os_type = recipe['os_type']
+        file_disk_type = recipe['file_disk_type']
+        ram = str(recipe['ram'])
+        vram = str(recipe['vram'])
+        disk_size = recipe['disk_size']
+        interface_name = recipe['interface_name']
+        interface_type = recipe['interface_type']
 
         dir_vm = self.get_machine_folder()
         os.chdir(dir_vm)
@@ -172,13 +176,14 @@ class Virtualbox(object):
             '--add ide')
 
         # Mount the iso to the IDE controller
-        run_cmd(
-            'VBoxManage storageattach "'+hostname+'" '
-            '--storagectl "IDE Controller" '
-            '--port 0 '
-            '--device 0 '
-            '--type dvddrive '
-            '--medium "'+iso+'"')
+        if iso:
+            run_cmd(
+                'VBoxManage storageattach "'+hostname+'" '
+                '--storagectl "IDE Controller" '
+                '--port 0 '
+                '--device 0 '
+                '--type dvddrive '
+                '--medium "'+iso+'"')
 
         # Enable Input/Output (mouse, keyboard, ...)
         run_cmd(
@@ -202,5 +207,13 @@ class Virtualbox(object):
         # Connect network bridge interface
         run_cmd(
             'VBoxManage modifyvm  "'+hostname+'" '
-            '--nic1 bridged '
+            '--nic1 '+interface_type+' '
             '--bridgeadapter1 '+interface_name)
+
+    def remove(self, name_or_uid):
+        """Remove virtualbox vm"""
+        logging.info('Remove virtualbox vm')
+        # Remove vm
+        run_cmd(
+            'VBoxManage unregistervm  "'+name_or_uid+'" '
+            '--delete')
