@@ -25,9 +25,11 @@ class Virtualbox(object):
 
     >>> virtualbox = Virtualbox(conf)
     >>> virtualbox.list_vms()
-    >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
-    >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
-
+    >>> virtualbox.create(
+    ...     hostname=hostname,
+    ...     recipe='Debian-amd64-standard',
+    ...     iso=./path/iso/debian.iso)
+    >>> virtualbox.run('Debian VM')
     """
 
     def __init__(self, conf=None):
@@ -91,12 +93,24 @@ class Virtualbox(object):
 
     @staticmethod
     def run(hostname):
-        """ Run existing vm"""
+        """ Run existing vm
+
+        >>> virtualbox = Virtualbox(conf)
+        >>> virtualbox.run('Debian VM')
+        """
         logging.info('Run existing vm')
         run_cmd("VBoxManage startvm "+hostname)
 
     def create(self, hostname, recipe, iso=None):
-        """Create virtualbox vm"""
+        """Create virtualbox vm
+        >>> from linuxiso.virtualbox import Virtualbox
+        >>> virtualbox = Virtualbox(conf)
+        >>> virtualbox.run('Debian VM')
+        >>> virtualbox.create(
+        ...     hostname=hostname,
+        ...     recipe='Debian-amd64-standard',
+        ...     iso=./path/iso/debian.iso)
+        """
         logging.info('Create virtualbox vm')
         l_vm = self.list_vms()
 
@@ -211,7 +225,11 @@ class Virtualbox(object):
             '--bridgeadapter1 '+interface_name)
 
     def remove(self, name_or_uid):
-        """Remove virtualbox vm"""
+        """Remove virtualbox vm
+
+        >>> virtualbox = Virtualbox(conf)
+        >>> virtualbox.remove('Debian VM')
+        """
         logging.info('Remove virtualbox vm')
         # Remove vm
         run_cmd(

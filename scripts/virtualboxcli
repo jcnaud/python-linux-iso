@@ -39,7 +39,7 @@ def main(agrs):
         elif args.list_ostypes:
             result = virtualbox.list_ostypes()
             # print(json.dumps(result, indent=4))
-            print(list(result.keys()))
+            print(json.dumps(sorted(list(result.keys())), indent=4))
         elif args.create:         # Create one VM
             virtualbox.create(
                 hostname=args.create,
