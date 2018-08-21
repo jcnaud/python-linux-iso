@@ -1,8 +1,8 @@
-
-virtualbox
+Virtualbox
 ===============
 
-.. automodule:: virtualbox
+.. autoclass:: linuxiso.virtualbox::Virtualbox
     :members:
+    :undoc-members:
     :show-inheritance:
-    :noindex:    
+    :inherited-members:

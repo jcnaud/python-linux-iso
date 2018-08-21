@@ -1,7 +1,7 @@
 Download
 ========
 
-.. autoclass:: download::Download
+.. autoclass:: linuxiso.download::Download
     :members:
     :undoc-members:
     :show-inheritance:
