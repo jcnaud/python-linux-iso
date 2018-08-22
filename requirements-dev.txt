@@ -7,5 +7,8 @@ python-json-logger
 # Documentaiton
 sphinx
 sphinx_rtd_theme
+sphinx-argparse
+
+# Tests
 pytest
 requests_mock
