@@ -1,5 +1,6 @@
+********
 Download
-========
+********
 
 .. autoclass:: linuxiso.download::Download
     :members:

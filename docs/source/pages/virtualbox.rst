@@ -1,5 +1,6 @@
+**********
 Virtualbox
-===============
+**********
 
 .. autoclass:: linuxiso.virtualbox::Virtualbox
     :members:

@@ -1,8 +1,8 @@
-
-linuxiso
-===============
+*********
+Linux ISO
+*********
 
 .. automodule:: linuxiso
     :members:
     :show-inheritance:
-    :noindex:    
+    :noindex:

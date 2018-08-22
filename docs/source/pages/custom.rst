@@ -1,5 +1,6 @@
+******
 Custom
-======
+******
 
 .. autoclass:: linuxiso.custom.core::Custom
     :members:

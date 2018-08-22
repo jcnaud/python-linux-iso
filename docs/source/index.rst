@@ -13,10 +13,10 @@ Contents:
 
     pages/intro
     pages/download
-    pages/downloadcli
     pages/custom
-    pages/customcli
     pages/virtualbox
+    pages/downloadcli
+    pages/customcli
     pages/virtualboxcli
 
 
