@@ -7,3 +7,8 @@ install:
 # command to run tests
 script:
   - pytest
+before_install:
+  - sudo apt-get install -y virtualbox
+addons:
+  apt:
+    update: true
