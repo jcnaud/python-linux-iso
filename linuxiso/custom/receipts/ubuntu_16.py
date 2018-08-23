@@ -104,13 +104,10 @@ def custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build, context):
             -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./cd')
         #-boot-info-table
 
-
     finally:
-        # == Big clean ==
+        # defore clean build directory
         if os.path.isdir(dir_cd):
             run_cmd('chmod -R u+rw '+dir_cd)
-            #run_cmd('rm -r '+dir_cd)
         if os.path.isdir(dir_loopdir):
             if os.path.ismount(dir_loopdir):
                 run_cmd('fusermount -u '+dir_loopdir)
-            #run_cmd('rm -r '+dir_loopdir)

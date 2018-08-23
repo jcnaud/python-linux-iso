@@ -2,15 +2,16 @@
 # coding: utf-8
 
 import os
-#import urllib.request
 import requests
 import hashlib  # Hash function
-import logging         # for logging mode/level
+import logging  # for logging mode/level
 
 
 class Download(object):
     """
     Class manage download and verify iso.
+
+    :param dict conf: Configuration
 
     You need to provide configuration with all info of iso managed.
 
@@ -29,11 +30,13 @@ class Download(object):
     """
 
     def __init__(self, conf=None):
-        """Init"""
         self.conf = conf
 
     def list(self):
         """Get list of iso managed.
+
+        :return: List of iso managed
+        :rtype: list
 
         >>> download.list()
         [
@@ -53,6 +56,10 @@ class Download(object):
 
     def status(self, iso):
         """Get one iso status.
+
+        :param str iso: Name of iso used
+        :return: Status of the iso
+        :rtype: dict
 
         Test :
          - if the url to download the iso exist
@@ -98,6 +105,9 @@ class Download(object):
     def status_all(self):
         """Get all iso status.
 
+        :return: status of all iso managed
+        :rtype: dict
+
         Test if the url to download exist, if the iso already downloaded
         and if the checksum is good
 
@@ -112,7 +122,9 @@ class Download(object):
 
     def _check_url(self, url):
         """ Check if url exist
-        return bool :
+
+        :return: True if url exist, else False
+        :rtype: bool
         """
         try:
             reponse = requests.head(url, allow_redirects=True)
@@ -125,6 +137,8 @@ class Download(object):
 
     def download(self, iso):
         """Download one iso
+
+        :param str iso: Name of iso used
 
         >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
         """
@@ -155,6 +169,8 @@ class Download(object):
 
     def remove(self, iso):
         """ Remove one iso
+
+        :param str iso: Name of iso used
 
         >>> download.remove("debian-9.5.0-strech-amd64-netinst.iso")
         """

@@ -101,7 +101,7 @@ class Custom(object):
         except Exception as e:
             raise Exception(e)
         finally:
-            # Clean the build directory
+            # Clean build directory
             if os.path.isdir(dir_build):
                 run_cmd('rm -r '+dir_build)
 
