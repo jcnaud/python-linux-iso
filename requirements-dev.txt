@@ -12,3 +12,4 @@ sphinx-argparse
 # Tests
 pytest
 requests_mock
+pyroute2
