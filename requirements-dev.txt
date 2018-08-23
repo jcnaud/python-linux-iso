@@ -1,5 +1,5 @@
 pyyaml
-schema
+jsonschema
 requests
 pyhttp
 python-json-logger

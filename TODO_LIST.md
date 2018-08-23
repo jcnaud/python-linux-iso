@@ -15,7 +15,7 @@
 
 ### Download
 - [x] Download via wget
-- [ ] Verify Checksum
+- [x] Verify Checksum
 - [ ] Check signature
 
 ### Custom

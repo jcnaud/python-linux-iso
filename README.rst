@@ -92,3 +92,13 @@ Secondly, compile the documentation with sphinx::
     make html
 
 The entry point of the documentation is in **docs/build/html/index.html**.
+
+
+Compile distribution package
+============================
+
+Compile distribution package from source::
+
+    python setup.py sdist
+
+The distribution package are in the **dist** directory
