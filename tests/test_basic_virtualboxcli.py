@@ -56,6 +56,8 @@ def test_list():
     cmd = PROGRAM+' --list'
     result = run_cmd(cmd, cwd=DIR_PROGRAM)
 
+    print(result)
+
     # Compare result
     assert json.loads(result)
 
