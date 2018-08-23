@@ -134,6 +134,9 @@ class Virtualbox(object):
         interface_type = recipe['interface_type']
 
         dir_vm = self.get_machine_folder()
+        if not os.path.isdir(dir_vm):
+            os.mkdir(dir_vm)
+
         os.chdir(dir_vm)
 
         os.mkdir(dir_vm+os.sep+hostname)
