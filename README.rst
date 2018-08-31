@@ -1,8 +1,19 @@
 ****************
 Python linux iso
 ****************
+
 .. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=master
     :target: https://travis-ci.org/jcnaud/python-linux-iso
+
+
+.. image:: https://api.codeclimate.com/v1/badges/9fab9605801e7de8c05e/maintainability
+   :target: https://codeclimate.com/github/jcnaud/python-linux-iso/maintainability
+   :alt: Maintainability
+
+.. image:: https://api.codeclimate.com/v1/badges/9fab9605801e7de8c05e/test_coverage
+    :target: https://codeclimate.com/github/jcnaud/python-linux-iso/test_coverage
+    :alt: Test Coverage
+
 
 Links
 =====
@@ -25,8 +36,8 @@ This programme have **three** parts:
 Actually, you can custom:
 
  - debian 9
- - unbuntu 16 (UNDER TEST)
- - unbuntu 17 (UNDER TEST)
+ - unbuntu 16 (UNDER DEV)
+ - unbuntu 17 (UNDER DEV)
 
 Each part can be use independently in different way like:
  - Command Line Interface (CLI)
