@@ -32,6 +32,7 @@ pip-log.txt
 .coverage
 .tox
 /.pytest_cache
+/coverage.xml
 
 ## Translations
 *.mo

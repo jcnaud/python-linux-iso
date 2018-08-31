@@ -1,6 +1,8 @@
 ****************
 Python linux iso
 ****************
+.. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=master
+    :target: https://travis-ci.org/jcnaud/python-linux-iso
 
 Links
 =====
@@ -102,3 +104,16 @@ Compile distribution package from source::
     python setup.py sdist
 
 The distribution package are in the **dist** directory
+
+
+Calcul tests coverage
+=====================
+The calcul of tests coverage is make with **pytest-cov**.
+
+First install developpement dependency::
+
+    pip install -r requirements-dev.txt
+
+Run coverage::
+
+     py.test --cov=linuxiso tests

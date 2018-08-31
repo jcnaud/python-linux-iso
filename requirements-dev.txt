@@ -11,5 +11,6 @@ sphinx-argparse
 
 # Tests
 pytest
+pytest-cov
 requests_mock
 pyroute2

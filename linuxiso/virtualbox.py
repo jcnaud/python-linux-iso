@@ -5,8 +5,6 @@ import os
 import re
 
 import logging         # for logging mode/level
-import argparse        # for command line usage (with options/arguments)
-#import argparse_parent_with_group
 
 # Local Import
 from linuxiso.ressources.tools import run_cmd
@@ -84,12 +82,13 @@ class Virtualbox(object):
     def get_machine_folder():
         """Get machine folder"""
         logging.info('Get machine folder')
-        ligne = run_cmd("VBoxManage list systemproperties | grep \"Default machine folder:\"")
+        ligne = run_cmd(
+            'VBoxManage list systemproperties |'
+            ' grep \"Default machine folder:\"')
 
         logging.debug('Extract information with RegEX')
         m = re.search(r"^[^:]+:\s*(?P<dir_vm>.*)$", ligne)
         return m.group("dir_vm")
-        #Default machine folder:          /home/jnaud/VirtualBox VMs
 
     @staticmethod
     def run(hostname):
@@ -117,10 +116,11 @@ class Virtualbox(object):
         isexist = [x['name'] for x in l_vm if hostname == x['name']]
         assert isexist == [], "Error : la vm '"+hostname+"' existe déjà"
 
-        assert recipe in self.conf['virtualbox']['recipes'].keys(), "Error : la recipe '"+recipe+"' n'existe pas"
+        msg = "Error : la recipe '"+recipe+"' n'existe pas"
+        assert recipe in self.conf['virtualbox']['recipes'].keys(), msg
 
         #        dir1 = conf['disk-dir']+'/'+conf['hostname']
-        #assert(not os.path.exists(dir1)), "Le dossier "+dir1+" existe déjà !"
+        # assert(not os.path.exists(dir1)), "Le dossier "+dir1+" existe déjà !"
 
         # dir_iso = self.conf['dir_input']['path']
         # dir_isocustom  = self.conf['dir_isocustom']['path']
