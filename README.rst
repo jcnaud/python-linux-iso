@@ -2,7 +2,7 @@
 Python linux iso
 ****************
 
-.. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=master
+.. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=develop
     :target: https://travis-ci.org/jcnaud/python-linux-iso
 
 
