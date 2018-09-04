@@ -1,6 +1,9 @@
 ****************
 Python linux iso
 ****************
+.. image:: https://readthedocs.org/projects/python-linux-iso/badge/?version=develop
+    :target: https://python-linux-iso.readthedocs.io/en/latest/?badge=develop
+    :alt: Documentation Status
 
 .. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=develop
     :target: https://travis-ci.org/jcnaud/python-linux-iso
