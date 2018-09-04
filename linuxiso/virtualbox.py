@@ -39,6 +39,7 @@ class Virtualbox(object):
         Get list vms
         return l_vm : dict result
         """
+
         logging.info('Get list vms')
         # == Command
         l_vm_raw = run_cmd('VBoxManage list vms')
@@ -61,6 +62,7 @@ class Virtualbox(object):
         Get list ostypes
         return l_ostypes : dict result
         """
+
         logging.info('Get list ostypes')
         # == Command
         l_ostypes_raw = run_cmd("VBoxManage list ostypes")
@@ -81,6 +83,7 @@ class Virtualbox(object):
     @staticmethod
     def get_machine_folder():
         """Get machine folder"""
+
         logging.info('Get machine folder')
         ligne = run_cmd(
             'VBoxManage list systemproperties |'
@@ -97,6 +100,7 @@ class Virtualbox(object):
         >>> virtualbox = Virtualbox(conf)
         >>> virtualbox.run('Debian VM')
         """
+
         logging.info('Run existing vm')
         run_cmd("VBoxManage startvm "+hostname)
 
@@ -110,6 +114,7 @@ class Virtualbox(object):
         ...     recipe='Debian-amd64-standard',
         ...     iso=./path/iso/debian.iso)
         """
+
         logging.info('Create virtualbox vm')
         l_vm = self.list_vms()
 
@@ -233,6 +238,7 @@ class Virtualbox(object):
         >>> virtualbox = Virtualbox(conf)
         >>> virtualbox.remove('Debian VM')
         """
+
         logging.info('Remove virtualbox vm')
         # Remove vm
         run_cmd(

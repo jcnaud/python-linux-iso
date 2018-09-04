@@ -3,6 +3,6 @@ Virtualbox CLI
 **************
 
 .. argparse::
-    :filename: ../scripts/virtualboxcli
+    :module: linuxiso.scripts.virtualboxcli
     :func: argument_parser
     :prog: virtualboxcli

@@ -3,6 +3,6 @@ Download CLI
 ************
 
 .. argparse::
-    :filename: ../scripts/downloadcli
+    :module: linuxiso.scripts.downloadcli
     :func: argument_parser
     :prog: downloadcli
