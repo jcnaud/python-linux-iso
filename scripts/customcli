@@ -5,7 +5,7 @@ import os
 import sys
 
 # Local import
-DIR_PWD = os.path.dirname(os.path.realpath('__file__'))
+DIR_PWD = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(DIR_PWD, ".."))
 from linuxiso.scripts.customcli import argument_parser, main  # noqa
 
