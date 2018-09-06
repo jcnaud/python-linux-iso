@@ -8,8 +8,8 @@ import logging
 import json
 
 # Local import
-DIR_PWD = os.path.dirname(os.path.realpath('__file__'))
-sys.path.append(os.path.join(DIR_PWD, ".."))
+# DIR_PWD = os.path.dirname(os.path.realpath('__file__'))
+# sys.path.append(os.path.join(DIR_PWD, ".."))
 from linuxiso.virtualbox import Virtualbox  # noqa
 from linuxiso.ressources.tools import load_conf  # noqa
 
