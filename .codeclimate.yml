@@ -30,3 +30,8 @@ checks:
   identical-code:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
+plugins:
+  radon:
+    enabled: true
+  pep8:
+    enabled: true
