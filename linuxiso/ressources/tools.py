@@ -12,7 +12,11 @@ def load_conf(confFile=None, confJson=None, confDict=None):
     :return : configuration valided
     """
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    conf_schema = os.path.join(dir_path, '..', 'conf_jsonschema.json')
+    conf_schema = os.path.join(
+        dir_path,
+        '..',
+        'ressources',
+        'conf_jsonschema.json')
     if confFile:
         with open(confFile, "r") as f:
             conf = yaml.load(f)
@@ -21,7 +25,7 @@ def load_conf(confFile=None, confJson=None, confDict=None):
     elif confDict:
         conf = confDict
     else:
-        confDefaultFile = os.path.join(dir_path, '..', 'settings.yaml')
+        confDefaultFile = os.path.join(dir_path, '..', 'conf', 'settings.yaml')
         with open(confDefaultFile, "r") as f:
             conf = yaml.load(f)
 

@@ -11,7 +11,7 @@ from linuxiso.ressources.tools import run_cmd
 def custom_debian_9(iso_input, iso_ouput, dir_build, context):
     """
     Transform iso Debian 9
-    
+
     params file_iso : Name of Debian 9 iso used
     """
     # Directory to mount the iso
