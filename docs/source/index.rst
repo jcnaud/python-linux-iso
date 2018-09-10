@@ -12,7 +12,6 @@ Contents:
     :maxdepth: 1
 
     pages/intro
-    pages/readme
     pages/download
     pages/custom
     pages/virtualbox

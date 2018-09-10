@@ -23,7 +23,7 @@ Python linux iso
 Resume
 ======
 
-This programme provide a way to **deploy**, full **automatically**, an OS from official ISO.
+This programme provide a way to **download**, **custom** and **deploy**, full **automatically**, an OS ISO.
 The second goal of this project is to never use linux root access to make this.
 
 This programme have **tree** modules:
@@ -41,25 +41,43 @@ Each module can be use independently in different way like:
  - Command Line Interface (CLI)
  - python module
 
-This programme is unn on python:
+This programme is run with python:
  - 3.6 (UNDER DEVELOPPEMENT)
  - 3.5
 
-Usage overview
-==============
+Getting started
+===============
 
-image
+A typical use
+Download debian ISO::
 
-Download
-Custom
-Deploy -> on usb key
-Deploy -> on local vitualbox
-Deploy -> on loca PXE (FUTURE DEVLOPPEMENT)
+  ./scripts/downloadcli --download debian-9.5.0-strech-amd64-netinst.iso
+
+Custom this debian iso with recipe and conf::
+
+  ./scripts/customcli --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso --context ./example/debiansimple/context.yaml
+
+Deploy on virtualbox::
+
+TODO
+
+Or deploy on USB KEY (cf. documentation)
+
+Or deploy on PXE (FUTURE DEVELOPPEMENT)
 
 
-Project structure
-=================
-::
+Architecture
+============
+
+Life cycle:
+ - Download
+ - Custom
+ - Deploy
+    - on usb key
+    - on localhost vitualbox
+    - on localhost PXE (FUTURE DEVELOPPEMENT)
+
+Project structure::
 
   ├── docs/            # Sphinx documentation deploy on **readthedoc.io**
   ├── examples/
@@ -92,8 +110,9 @@ To avoid using root access, we need some tools for mount, unmount and build ISO.
 Linux package
 -------------
 For example, on debian, install theses paquages
+
 ```bash
-apt-get install xorriso virtualbox
+sudo apt-get install xorriso virtualbox
 ```
 
 Python
@@ -102,17 +121,16 @@ A strongly advice you to use **virtualenv**.
 
 Install virtualenv::
 
-apt-get install virtualenv
+  sudo apt-get install virtualenv
 
-::
   cd python-linux-iso/
   virtualenv -p /usr/bin/python3 venv
   source venv/bin/activate
   pip install -t requirements.txt
   deactivate
 
-pip install module
-python setup.py install
+  pip install module
+  python setup.py install
 
 
 Run unit test
@@ -120,11 +138,11 @@ Run unit test
 
 First install developpement dependency::
 
-    pip install -r requirements-dev.txt
+  pip install -r requirements-dev.txt
 
 Secondly, execute all test using **pytest**::
 
-    pytest tests
+  pytest tests
 
 
 Compile documentation
@@ -133,12 +151,12 @@ This documentation is generated with sphinx.
 
 First install developpement dependency::
 
-    pip install -r requirements-dev.txt
+  pip install -r requirements-dev.txt
 
 Secondly, compile the documentation with sphinx::
 
-    cd docs
-    make html
+  cd docs
+  make html
 
 The entry point of the documentation is in **docs/build/html/index.html**.
 
@@ -148,19 +166,19 @@ Compile distribution package
 
 Compile distribution package from source::
 
-    python setup.py sdist
+  python setup.py sdist
 
 The distribution package are in the **dist** directory
 
 
-Calcul tests coverage
-=====================
+Run tests with coverage
+=======================
 The calcul of tests coverage is make with **pytest-cov**.
 
 First install developpement dependency::
 
-    pip install -r requirements-dev.txt
+  pip install -r requirements-dev.txt
 
-Run coverage::
+Run tests with coverage::
 
-     py.test --cov=linuxiso tests
+  py.test --cov=linuxiso tests
