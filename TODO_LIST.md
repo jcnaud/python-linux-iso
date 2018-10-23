@@ -120,3 +120,8 @@ mount -v -o offset=48234496 -t ext4 ../../iso/raspbian-9-strech-lite.img img2
 
 
 https://gist.github.com/jkullick/9b02c2061fbdf4a6c4e8a78f1312a689
+
+https://wiki.debian.org/RaspberryPi/qemu-user-static
+
+lib piimg:
+https://github.com/alexchamberlain/piimg
