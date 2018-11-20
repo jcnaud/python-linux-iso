@@ -23,7 +23,7 @@ def argument_parser():
         epilog=textwrap.dedent('''\
             Example of standard usage:
 
-                ./downloadcli --list
+                ./downloadcli --config ../examples/0_debian_simple/settings.yaml --list
                 ./downloadcli --status debian-9.5.0-strech-amd64-netinst.iso
                 ./downloadcli --download debian-9.5.0-strech-amd64-netinst.iso
             '''))

@@ -1,10 +1,8 @@
+general:
+  dir_input: "/home/jnaud/var/iso"       # <directory where offical iso are>
+  dir_isocustom: "/home/jnaud/var/isocustom" # <directory to put custom iso>
+  dir_build: "/home/jnaud/var/build"     # <temp directory where we build iso>
 
-dir_input:
-  path : "/home/jnaud/var/iso"
-dir_isocustom:
-  path : "/home/jnaud/var/isocustom"
-dir_build :
-  path : "/home/jnaud/var/build"
 download :
   debian-9.5.0-strech-amd64-netinst.iso:
     label: Debian 9.5.0 Strech amd64 Netinst
@@ -48,7 +46,6 @@ download :
       type: sha256
       sum: 3271b244734286d99aeba8fa043b6634cad488d211583814a2018fc14fdca313
 
-
 custom :
   Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso :
     label : Custom FullAuto Debian 9 Amd64 netinst server
@@ -74,33 +71,25 @@ custom :
     iso_base : ubuntu-17.10.1-Artful_Aardvark-amd64-server.iso
     transfom : customUbuntu17soft
 
-#virtualbox:
-  #disk-dir: '/mnt/data/var/VirtualBox VMs'
-
-virtualbox :
-  recipes :
-    Debian-amd64-standard:
+virtualbox:
+  vms:
+    Debian-amd64-standard:      # <unique name>
       #hostname: 'test debian'
-      os_type : 'Debian_64'     # Id fourni dans la liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
-      file_disk_type : 'vmdk'   # vdi | vmdk
-      ram : 1024              # multiple de x^2 : exemple 1*1024
-      vram : 128              # mémoire video
-      disk_size : 32768       # multiple de x^2 : exemple 8*1024
-
-      # Chemin absolu
-      #cd-iso: 'Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso' # Chemin absolu
-      interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
+      os_type : 'Debian_64'     # <Id> of the liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
+      file_disk_type : 'vmdk'   # <vdi | vmdk>
+      ram : 1024              # <ram size Mo> multiple of x^2 : example 1*1024
+      vram : 128              # <video ram size Mo>
+      disk_size : 32768       # <disk size Mo> multiple of x^2 : example 8*1024
+      interface_name: 'wlan0'      # <interface> to connection with this vms
       interface_type: 'bridged'    # bridged | ...
 
     Debian-amd64-raid:
-        #hostname: 'test debian'
-        os_type : 'Debian_64'     # Id fourni dans la liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
-        file_disk_type : 'wlan0'   # vdi | vmdk
-        ram : 1024              # multiple de x^2 : exemple 1*1024
-        vram : 128              # mémoire video
-        disk_size : [32768,32768]       # multiple de x^2 : exemple 8*1024
+      #hostname: 'test debian'
+      os_type : 'Debian_64'     # Id fourni dans la liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
+      file_disk_type : 'wlan0'   # vdi | vmdk
+      ram : 1024              # multiple de x^2 : exemple 1*1024
+      vram : 128              # mémoire video
+      disk_size : [32768,32768]       # multiple de x^2 : exemple 8*1024
 
-        # Chemin absolu
-        #cd-iso: 'Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso' # Chemin absolu
-        interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
-        interface_type: 'bridged'    # bridged | ...
+      interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
+      interface_type: 'bridged'    # bridged | ...

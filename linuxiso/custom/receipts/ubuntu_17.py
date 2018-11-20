@@ -15,12 +15,12 @@ def custom_ubuntu_17_soft(self, file_iso):
     Transform iso Ubuntu 17
     params file_iso : Name of Debian 16 iso used
     """
-    dir_build = self.conf['dir_build']['path']
+    dir_build = self.conf['general']['dir_build']
     # Create build directory
     if not os.path.isdir(dir_build):
         os.makedirs(dir_build)
     dir_build_tmp = tempfile.mkdtemp(dir=dir_build)
-    dir_input = self.conf['dir_input']['path']
+    dir_input = self.conf['general']['dir_input']
     iso_ouput = self.conf['iso_ouput']['path']
     dir_loopdir = dir_build_tmp + os.sep + 'loopdir'  # Directory to mount the iso
     dir_cd = dir_build_tmp + os.sep + 'cd'            # Directory to copy and modify the iso

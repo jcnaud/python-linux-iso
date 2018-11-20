@@ -182,3 +182,9 @@ First install developpement dependency::
 Run tests with coverage::
 
   py.test --cov=linuxiso tests
+
+
+Links
+=====
+Debian wiki for Raspbian: https://wiki.debian.org/RaspberryPi/qemu-user-static
+Mount all king of *.img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/

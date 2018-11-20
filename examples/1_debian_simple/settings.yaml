@@ -1,0 +1,52 @@
+
+general:
+  dir_input: "/home/jnaud/var/iso"       # <directory where offical iso are>
+  dir_isocustom: "/home/jnaud/var/isocustom" # <directory to put custom iso>
+  dir_build: "/home/jnaud/var/build"     # <temp directory where we build iso>
+
+download :
+  debian-9.5.0-strech-amd64-netinst.iso:
+    label: Debian 9.5.0 Strech amd64 Netinst
+    url_iso: https://cdimage.debian.org/debian-cd/9.5.0/amd64/iso-cd/debian-9.5.0-amd64-netinst.iso
+    hash:
+      type: sha1
+      sum: ed1cf0dea20831fb26661c10ca65340e3a3ea616
+
+custom :
+  receipts:
+    Custom-FullAuto-Debian-9-strech-amd64-netinst-server: # <Unique recipe to custom iso>
+      label : Custom FullAuto Debian 9 Amd64 netinst server
+      template : preseed-Debian-9-strech-amd64-srv.cfg.j2
+      iso_base : debian-9.5.0-strech-amd64-netinst.iso
+      transfom : customDebian9soft
+  contexts:
+    myhostname.iso: # <Unique iso name>
+      hostname: myhostname          # <Unique hostnamename>
+      domain: example.lan           # <Domaine name>
+      var_ntp_server: pool.ntp.org  # <NTP serveur> for time synchronisation
+      root_password: mypassword     # <root password>
+      user_name: myuser             # <user name>
+      user_password: mypassword     # <user password>
+
+      # Optional : Add user ansible for automatic deployed
+      option_ansible:
+        ansible_user_name: ansible
+        ansible_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxxDwYctg2ngBkR5Xuzz3NxGIxqY88nOVP1SOnAz24B3LfCn7EzpEHvUC/Dw+fGk0CmFEQZMBFc7vjOTVT1kk2wajX241y+zHd92JA1NFdxa8T2kg5xlkXK5zAvs5a/PRmTcijnSK1ynw1t+uglLgpj3UkhZ3OScfc8xmb1SPy/8carF44HavNI0/KTXjyuBuM3b+9GXChwMLI2ZNQZ+RAEVH5nsaLwPqWVHCe6JID2ApIHNq4kC/V9pRGsH1w4tApVspCJ4lnSlMxVLbnS+zdJpV2/UpaFv64VG5KTbkeNYBwg7EE6KVI+bU93AMZYI75UeEPafWT/WESDW9K1RbH root@edugastp
+
+      # Optional : Add HTTP POST each time the OS start.
+      #  The body contain the "ansible host status"
+      option_post_start_running:
+        url: localhost             # <url HTTP POST serveur>
+        port: 9001                 # <port HTTP POST serveur>
+
+virtualbox:
+  vms:
+    myhostname:      # Vm name (advided to put the hostname)
+      os_type : 'Debian_64'     # <Id> of the liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
+      file_disk_type : 'vmdk'   # <vdi | vmdk>
+      ram : 1024              # <ram size Mo> multiple of x^2 : example 1*1024
+      vram : 128              # <video ram size Mo>
+      disk_size : 32768       # <disk size Mo> multiple of x^2 : example 8*1024
+      interface_name: 'wlan0'      # <interface> to connection with this vms
+      interface_type: 'bridged'    # bridged | ...

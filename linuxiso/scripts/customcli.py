@@ -54,14 +54,6 @@ netinst-server.iso
         "-S", "--status-all",
         help="status of all custom iso/image",
         action="store_true")
-    # group.add_argument(
-    #     "-c", "--create",
-    #     help="create custom iso/image",
-    #     metavar="ISO_NAME")
-    group.add_argument(
-        "-t", "--context",
-        help="specify context for the creation",
-        metavar="CONTEXT_FILE")
     group.add_argument(
         "-r", "--remove",
         help="remove the custom iso/image",
@@ -70,6 +62,14 @@ netinst-server.iso
         "-k", "--remove-all",
         help="remove all custom iso/image",
         action="store_true")
+    group.add_argument(
+        "-c", "--create",
+        help="create custom iso/image",
+        metavar="ISO_NAME")
+    parser.add_argument(
+        "-t", "--context",
+        help="specify context for the creation",
+        metavar="CONTEXT")
 
     group_vq = parser.add_mutually_exclusive_group()
     group_vq.add_argument(
@@ -112,12 +112,11 @@ def main(args):
         elif args.status_all:     # Get status of all custom iso
             result = custom.status_all()
             print(json.dumps(result, indent=4, sort_keys=True))
-        # elif args.create:         # Create one custom iso/image
-        #     if args.context:
-        #         context = yaml.load(args.context)
-        #         custom.create(args.create, context)
-        #     else:
-        #         print('no context specidied')
+        elif args.create:         # Create one custom iso/image
+            if args.context:
+                custom.create(args.create, args.context)
+            else:
+                print('no context specidied')
         elif args.remove:         # Remove one customiso/image
             custom.remove(args.remove)
         elif args.remove_all:     # Remove all custom iso/image

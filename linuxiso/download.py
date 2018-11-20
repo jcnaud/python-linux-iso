@@ -79,7 +79,7 @@ class Download(object):
         result = {}
         result['is_url_exist'] = self._check_url(url)
 
-        file = os.path.join(self.conf['dir_input']['path'], iso)
+        file = os.path.join(self.conf['general']['dir_input'], iso)
         if os.path.isfile(file):
             result['is_downloaded'] = True
 
@@ -143,7 +143,7 @@ class Download(object):
         >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
         """
         url_iso = self.conf['download'][iso]['url_iso']
-        dir_input = self.conf['dir_input']['path']
+        dir_input = self.conf['general']['dir_input']
         file_iso = dir_input+os.sep+iso
 
         if not os.path.isdir(dir_input):
@@ -174,7 +174,7 @@ class Download(object):
 
         >>> download.remove("debian-9.5.0-strech-amd64-netinst.iso")
         """
-        file_iso = self.conf['dir_input']['path']+os.sep+iso
+        file_iso = self.conf['general']['dir_input']+os.sep+iso
         if os.path.isfile(file_iso):
             os.remove(file_iso)
 

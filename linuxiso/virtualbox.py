@@ -127,8 +127,8 @@ class Virtualbox(object):
         #        dir1 = conf['disk-dir']+'/'+conf['hostname']
         # assert(not os.path.exists(dir1)), "Le dossier "+dir1+" existe déjà !"
 
-        # dir_iso = self.conf['dir_input']['path']
-        # dir_isocustom  = self.conf['dir_isocustom']['path']
+        # dir_iso = self.conf['general']['dir_input']
+        # dir_isocustom  = self.conf['general']['dir_isocustom']
         recipe = self.conf['virtualbox']['recipes'][recipe]
         os_type = recipe['os_type']
         file_disk_type = recipe['file_disk_type']

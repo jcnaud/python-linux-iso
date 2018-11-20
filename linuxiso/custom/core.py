@@ -43,7 +43,7 @@ class Custom(object):
         Check custom iso/image status
         return : dict with status
         """
-        dir_isocustom = self.conf['dir_isocustom']['path']
+        dir_isocustom = self.conf['general']['dir_isocustom']
 
         if os.path.isfile(dir_isocustom+os.sep+iso):
             return {'is_exist': True}
@@ -69,14 +69,15 @@ class Custom(object):
         #subprocess.run(["ls", "-l", "/dev/null"], stdout=subprocess.PIPE)
 
         # Deduce iso_input
-        dir_input = self.conf['dir_input']['path']
-        iso_input = dir_input+os.sep+self.conf['custom'][file_iso]['iso_base']
-
+        dir_input = self.conf['general']['dir_input']
+        receipts = self.conf['custom']['receipts']
+        iso_input = dir_input+os.sep+receipts[file_iso]['iso_base']
+        template_vars = self.conf['custom']['contexts'][context]
         # Deduce iso output
-        iso_ouput = os.path.join(self.conf['dir_isocustom']['path'], file_iso)
+        iso_ouput = os.path.join(self.conf['general']['dir_isocustom'], file_iso)
 
         # Create build directory
-        dir_build = self.conf['dir_build']['path']
+        dir_build = self.conf['general']['dir_build']
         if not os.path.isdir(dir_build):
             os.makedirs(dir_build)
         dir_build_tmp = tempfile.mkdtemp(dir=dir_build)
@@ -88,10 +89,10 @@ class Custom(object):
         #if not os.path.isdir(dir_build):
         #  os.rmdir(dir_build)
         try:
-            if self.conf['custom'][file_iso]['transfom'] == 'customDebian9':
-                custom_debian_9(iso_input, iso_ouput, dir_build_tmp, context)
-            elif self.conf['custom'][file_iso]['transfom'] == 'customDebian9soft':
-                custom_debian_9_soft(iso_input, iso_ouput, dir_build_tmp, context)
+            if receipts[file_iso]['transfom'] == 'customDebian9':
+                custom_debian_9(iso_input, iso_ouput, dir_build_tmp, template_vars)
+            elif receipts[file_iso]['transfom'] == 'customDebian9soft':
+                custom_debian_9_soft(iso_input, iso_ouput, dir_build_tmp, template_vars)
             # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu16soft':
             #     custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build_tmp, context)
             # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu17soft':
@@ -112,7 +113,7 @@ class Custom(object):
 
         >>> custom.remove("Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso")
         """
-        file_iso = self.conf['dir_isocustom']['path']+os.sep+iso
+        file_iso = self.conf['general']['dir_isocustom']+os.sep+iso
 
         if os.path.isfile(file_iso):
             os.remove(file_iso)

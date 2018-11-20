@@ -17,18 +17,24 @@ def load_conf(confFile=None, confJson=None, confDict=None):
         '..',
         'ressources',
         'conf_jsonschema.json')
+
+    # # Get inital conf
+    # confDefaultFile = os.path.join(dir_path, '..', 'conf', 'settings.yaml')
+    # with open(confDefaultFile, "r") as f:
+    #     conf1 = yaml.load(f)
+
     if confFile:
         with open(confFile, "r") as f:
-            conf = yaml.load(f)
+            conf2 = yaml.load(f)
     elif confJson:
-        conf = json.loads(confJson)
-    elif confDict:
-        conf = confDict
+        conf2 = json.loads(confJson)
     else:
-        confDefaultFile = os.path.join(dir_path, '..', 'conf', 'settings.yaml')
-        with open(confDefaultFile, "r") as f:
-            conf = yaml.load(f)
+        conf2 = confDict
 
+    conf = conf2
+    assert conf, 'No configuration given'
+
+    # print(json.dumps(conf, indent=4))
     with open(conf_schema, "r") as f:
         dict_schema = json.load(f)
 

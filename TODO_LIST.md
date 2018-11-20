@@ -121,7 +121,168 @@ mount -v -o offset=48234496 -t ext4 ../../iso/raspbian-9-strech-lite.img img2
 
 https://gist.github.com/jkullick/9b02c2061fbdf4a6c4e8a78f1312a689
 
-https://wiki.debian.org/RaspberryPi/qemu-user-static
 
+https://raspberrypi.stackexchange.com/questions/855/is-it-possible-to-update-upgrade-and-install-software-before-flashing-an-image
 lib piimg:
 https://github.com/alexchamberlain/piimg
+
+qemu rapberry
+https://www.supinfo.com/articles/single/5429-emuler-une-raspberry-pi-linux-avec-qemu
+
+
+
+raspberry-pi-chroot-armv7-qemu.md
+
+# install dependecies
+apt-get install qemu qemu-user-static binfmt-support
+
+
+
+# download raspbian image
+wget https://downloads.raspberrypi.org/raspbian_latest
+
+# extract raspbian image
+unzip raspbian_latest
+
+# extend raspbian image by 1gb
+dd if=/dev/zero bs=1M count=1024 >> 2016-05-27-raspbian-jessie.img
+
+# set up image as loop device
+losetup /dev/loop0 2016-05-27-raspbian-jessie.img
+
+# check file system
+e2fsck -f /dev/loop0p2
+
+#expand partition
+resize2fs /dev/loop0p2
+
+# mount partitioncd
+mount -o rw /dev/loop0p2  /mnt
+mount -o rw /dev/loop0p1 /mnt/boot
+
+# mount binds
+mount --bind /dev /mnt/dev/
+mount --bind /sys /mnt/sys/
+mount --bind /proc /mnt/proc/
+mount --bind /dev/pts /mnt/dev/pts
+
+# ld.so.preload fix
+sed -i 's/^/#/g' /mnt/etc/ld.so.preload
+
+# copy qemu binary
+cp /usr/bin/qemu-arm-static /mnt/usr/bin/
+
+# chroot to raspbian
+chroot /mnt /bin/bash
+ # do stuff...
+ exit
+
+# revert ld.so.preload fix
+sed -i 's/^#//g' /mnt/etc/ld.so.preload
+
+# unmount everything
+umount /mnt/{dev/pts,dev,sys,proc,boot,}
+
+# unmount loop device
+losetup -d /dev/loop0
+#-----------------------------------------------------
+apt-get install qemu qemu-user-static binfmt-support
+
+# check qemu works
+update-binfmts --display
+
+
+# Check
+fdisk -lu 2018-10-09-raspbian-stretch.img
+
+# ???? 1G free ????
+dd if=/dev/zero bs=1M count=1024 >> 2018-10-09-raspbian-stretch.img
+
+
+# Check and get start and Fin multiply by 512
+fdisk -lu 2018-10-09-raspbian-stretch.img
+
+#Périphérique                     Amorçage Start     Fin Secteurs  Size Id Type
+#2018-10-09-raspbian-stretch.img1           8192   97890    89699 43,8M  c W95 FAT32 (LBA)
+#2018-10-09-raspbian-stretch.img2          98304 8077311  7979008  3,8G 83 Linux
+
+8192*512 = 4194304
+97890*512 = 50119680
+
+
+98304 * 512 = 50331648
+8077311 * 512 = 4135583232
+
+# Mount partition
+sudo losetup -v -f -o 50331648 --sizelimit 4135583232 2018-10-09-raspbian-stretch.img
+sudo mount -v -t ext4 /dev/loop1 mnt
+sudo losetup -v -f -o 4194304 --sizelimit 50119680 2018-10-09-raspbian-stretch.img
+sudo mount -v -t vfat /dev/loop2 mnt/boot
+
+#sudo cp /usr/bin/qemu-arm-static /mnt/rasp-pi-rootfs/usr/bin/
+
+sudo mount --rbind /dev mnt/dev
+sudo mount -t proc none mnt/proc
+sudo mount -o bind /sys mnt/sys
+sudo mount --bind /dev/pts mnt/dev/pts
+
+
+# Some modification for chroot works
+# ld.so.preload fix
+sudo sed -i 's/^/#/g' mnt/etc/ld.so.preload
+# Add arm bin
+sudo cp /usr/bin/qemu-arm-static mnt/usr/bin
+
+
+# Chroot in
+cd mnt
+chroot . bin/bash
+
+# Check you are in the Chroot
+uname -a
+
+# Option : remove desktop env (for rasbian)
+
+# Exit the Chroot
+Exit
+# ld.so.preload unfix
+sudo sed -i 's/^#//g' mnt/etc/ld.so.preload
+# Add arm bin (not necessary)
+rm  mnt/usr/bin
+
+# Clean
+
+umount mnt/dev/pts
+umount mnt/dev
+umount mnt/sys
+umount mnt/proc
+umount mnt/boot
+umount mnt
+
+
+
+# set up image as loop device
+sudo losetup /dev/loop0 2018-10-09-raspbian-stretch.img
+
+
+# Verify
+sudo fdisk -l /dev/loop0
+
+# check file system
+e2fsck -f /dev/loop0p2
+
+#expand partition
+resize2fs /dev/loop0p2
+
+
+
+# unmount loop device
+sudo losetup -d /dev/loop0
+
+
+    sudo mount -o loop,offset=$((137216*512))  raspbian-9-strech-lite.img ./mnt
+    sudo cp /usr/bin/qemu-arm-static /mnt/rasp-pi-rootfs/usr/bin/
+    sudo mount --rbind /dev /mnt/rasp-pi-rootfs/dev
+    sudo mount -t proc none /mnt/rasp-pi-rootfs/proc
+    sudo mount -o bind /sys /mnt/rasp-pi-rootfs/sys
+    sudo chroot /mnt/rasp-pi-rootfs
