@@ -39,8 +39,8 @@ download :
     label : CentOS 7 x86_amd64 desktop
     url_iso : http://miroir.univ-paris13.fr/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1708.iso
 
-  raspbian-9-strech-lite.img :
-    label : Raspbian strech Lite
+  raspbian-9-stretch-lite.img :
+    label : Raspbian stretch Lite
     url_iso : https://downloads.raspberrypi.org/raspbian_lite_latest
     hash:
       type: sha256
