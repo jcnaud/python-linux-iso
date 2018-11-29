@@ -3,6 +3,7 @@ jsonschema
 requests
 pyhttp
 python-json-logger
+clint
 
 # Documentaiton
 sphinx
