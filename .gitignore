@@ -44,5 +44,6 @@ pip-log.txt
 # Editor
 /venv
 .vscode
+.tags*
 
 /default
