@@ -18,7 +18,7 @@ def customRaspbian9(self, file_iso):
     """
     dir_build = self.conf['general']['dir_build']
     dir_input = self.conf['general']['dir_input']
-    iso_ouput = self.conf['iso_ouput']['path']
+    iso_ouput = self.conf['general']['dir_isocustom']
     dir_loopdir = dir_build + os.sep + 'loopdir'  # Directory to mount the iso
     dir_cd = dir_build + os.sep + 'cd'            # Directory to copy and modify the iso
     dir_irmod = dir_build + os.sep + 'irmod'      # Directory to copy and modify the init.rd

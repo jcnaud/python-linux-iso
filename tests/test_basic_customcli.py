@@ -6,12 +6,58 @@ import sys
 import six
 import subprocess
 import json
+import yaml
+import pytest
 
 # Local import
 DIR_PWD = os.path.dirname(os.path.realpath(__file__))
 DIR_PROGRAM = os.path.join(DIR_PWD, '..', 'scripts')
 PROGRAM = os.path.join(DIR_PROGRAM, 'customcli')
 
+@pytest.fixture
+def custom_config_file(tmpdir):
+    dirIso = tmpdir.mkdir("iso")
+    dirIsoCustom = tmpdir.mkdir("isocustom")
+    dirBuild = tmpdir.mkdir("build")
+    test0 = dirIso.join("test_0.iso")
+    test0.write("data on test_0")
+
+    customConfig = {
+        "general": {
+            "dir_input": str(dirIso.realpath()),
+            "dir_isocustom": str(dirIsoCustom.realpath()),
+            "dir_build": str(dirBuild.realpath()),
+        },
+        "download": {
+            "test_0.iso": {  # Downloaded and good hash
+                "label": "test the iso",
+                "url_iso": "https://test.com/test_0.iso",
+                "hash": {
+                    "type": "sha1",
+                    "sum": test0.computehash(
+                        hashtype="sha1",
+                        chunksize=65536)
+                }
+            },
+        },
+        "custom": {
+            "test_custom_0.iso": {
+                "label": "Test custom 0",
+                "iso_base": "debian-9.5.0-strech-amd64-netinst.iso",
+                "transfom": "custom_test"
+            },
+            "test_custom_1.iso": {
+                "label": "Test custom 1",
+                "iso_base": "debian-9.5.0-strech-amd64-netinst.iso",
+                "transfom": "custom_test_1"
+            }
+        }
+    }
+
+    p = tmpdir.mkdir("conf").join("settings.yaml")
+    p.write(yaml.dump(customConfig))
+
+    return str(p.realpath())
 
 def run_cmd(cmd, raseit=False, cwd=None):
     """
@@ -51,9 +97,9 @@ def test_help():
     assert result
 
 
-def test_list():
+def test_list(custom_config_file):
     """Test list option"""
-    cmd = PROGRAM+' --list'
+    cmd = PROGRAM+' --config '+custom_config_file+' --list'
     result = run_cmd(cmd, cwd=DIR_PROGRAM)
 
     # Compare result

@@ -21,11 +21,11 @@ def load_conf(confFile=None, confJson=None, confDict=None):
     # # Get inital conf
     # confDefaultFile = os.path.join(dir_path, '..', 'conf', 'settings.yaml')
     # with open(confDefaultFile, "r") as f:
-    #     conf1 = yaml.load(f)
+    #     conf1 = yaml.safe_load(f)
 
     if confFile:
         with open(confFile, "r") as f:
-            conf2 = yaml.load(f)
+            conf2 = yaml.safe_load(f)
     elif confJson:
         conf2 = json.loads(confJson)
     else:

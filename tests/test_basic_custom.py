@@ -29,14 +29,10 @@ def custom_config(tmpdir):
     test0.write("data on test_0")
 
     customConfig = {
-        "dir_input": {
-            "path": str(dirIso.realpath()),
-        },
-        "dir_isocustom": {
-            "path": str(dirIsoCustom.realpath()),
-        },
-        "dir_build": {
-            "path": str(dirBuild.realpath()),
+        "general": {
+            "dir_input": str(dirIso.realpath()),
+            "dir_isocustom": str(dirIsoCustom.realpath()),
+            "dir_build": str(dirBuild.realpath()),
         },
         "download": {
             "test_0.iso": {  # Downloaded and good hash
