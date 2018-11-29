@@ -25,8 +25,8 @@ def argument_parser():
     #         Example of standard usage:
     #
     #             ./downloadcli --list
-    #             ./downloadcli --status debian-9.5.0-strech-amd64-netinst.iso
-    #             ./downloadcli --download debian-9.5.0-strech-amd64-netinst.iso
+    #             ./downloadcli --status debian-9.6.0-strech-amd64-netinst.iso
+    #             ./downloadcli --download debian-9.6.0-strech-amd64-netinst.iso
     #         '''))
 
     parser_c.add_argument(

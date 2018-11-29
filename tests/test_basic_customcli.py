@@ -43,12 +43,12 @@ def custom_config_file(tmpdir):
         "custom": {
             "test_custom_0.iso": {
                 "label": "Test custom 0",
-                "iso_base": "debian-9.5.0-strech-amd64-netinst.iso",
+                "iso_base": "debian-9.6.0-strech-amd64-netinst.iso",
                 "transfom": "custom_test"
             },
             "test_custom_1.iso": {
                 "label": "Test custom 1",
-                "iso_base": "debian-9.5.0-strech-amd64-netinst.iso",
+                "iso_base": "debian-9.6.0-strech-amd64-netinst.iso",
                 "transfom": "custom_test_1"
             }
         }

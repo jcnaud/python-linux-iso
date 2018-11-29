@@ -220,7 +220,7 @@ def test_status_all(custom_config):
 def test_download_iso_not_downloaded(custom_config, file_to_download):
     with requests_mock.Mocker() as m:
         with open(file_to_download) as file:
-            m.get('https://test.com/test_3.iso', body=file)
+            m.get('https://test.com/test_3.iso', headers={'content-length': '29'}, body=file)
 
         conf = load_conf(confDict=custom_config)  # Custom configuration
         download = Download(conf=conf)
@@ -241,7 +241,7 @@ def test_download_iso_already_downloaded(custom_config, file_to_download):
     print(init_timestamp)
     with requests_mock.Mocker() as m:
         with open(file_to_download) as file:
-            m.get('https://test.com/test_2.iso', body=file)
+            m.get('https://test.com/test_2.iso',  headers={'content-length': '29'}, body=file)
 
         conf = load_conf(confDict=custom_config)  # Custom configuration
         download = Download(conf=conf)
@@ -255,10 +255,10 @@ def test_download_iso_already_downloaded(custom_config, file_to_download):
 def test_download_all(custom_config, file_to_download):
     with requests_mock.Mocker() as m:
         with open(file_to_download) as file:
-            m.get('https://test.com/test_0.iso', body=file)
-            m.get('https://test.com/test_1.iso', body=file)
-            m.get('https://test.com/test_2.iso', body=file)
-            m.get('https://test.com/test_3.iso', body=file)
+            m.get('https://test.com/test_0.iso', headers={'content-length': '29'}, body=file)
+            m.get('https://test.com/test_1.iso', headers={'content-length': '29'}, body=file)
+            m.get('https://test.com/test_2.iso', headers={'content-length': '29'}, body=file)
+            m.get('https://test.com/test_3.iso', headers={'content-length': '29'}, body=file)
 
         conf = load_conf(confDict=custom_config)  # Custom configuration
         download = Download(conf=conf)

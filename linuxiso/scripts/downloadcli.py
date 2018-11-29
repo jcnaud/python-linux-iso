@@ -24,8 +24,8 @@ def argument_parser():
             Example of standard usage:
 
                 ./downloadcli --config ../examples/0_debian_simple/settings.yaml --list
-                ./downloadcli --status debian-9.5.0-strech-amd64-netinst.iso
-                ./downloadcli --download debian-9.5.0-strech-amd64-netinst.iso
+                ./downloadcli --status debian-9.6.0-strech-amd64-netinst.iso
+                ./downloadcli --download debian-9.6.0-strech-amd64-netinst.iso
             '''))
 
     group = parser.add_mutually_exclusive_group()

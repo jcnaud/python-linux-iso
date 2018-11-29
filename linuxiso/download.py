@@ -5,7 +5,7 @@ import os
 import requests
 import hashlib  # Hash function
 import logging  # for logging mode/level
-
+from clint.textui import progress
 
 class Download(object):
     """
@@ -24,8 +24,8 @@ class Download(object):
 
     >>> download = Download(conf)
     >>> download.list()
-    >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
-    >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
+    >>> download.status("debian-9.6.0-strech-amd64-netinst.iso")
+    >>> download.download("debian-9.6.0-strech-amd64-netinst.iso")
 
     """
 
@@ -42,7 +42,7 @@ class Download(object):
         [
             "centos-7-x86-amd64-desktop.iso",
             "debian-10-buster-amd64-netinst-testing.iso",
-            "debian-9.5.0-strech-amd64-netinst.iso",
+            "debian-9.6.0-strech-amd64-netinst.iso",
             "kde-18.3-destop-kde.iso",
             "linuxmint-18.2-Sonya-amd64-desktop-cinnamon.iso",
             "raspbian-9-strech-lite.img",
@@ -66,7 +66,7 @@ class Download(object):
          - if the iso already downloaded
          - if the checksum is good (if the iso is download)
 
-        >>> download.status("debian-9.5.0-strech-amd64-netinst.iso")
+        >>> download.status("debian-9.6.0-strech-amd64-netinst.iso")
         {
             "is_downloaded": true,
             "is_hash_valid": true,
@@ -140,7 +140,7 @@ class Download(object):
 
         :param str iso: Name of iso used
 
-        >>> download.download("debian-9.5.0-strech-amd64-netinst.iso")
+        >>> download.download("debian-9.6.0-strech-amd64-netinst.iso")
         """
         url_iso = self.conf['download'][iso]['url_iso']
         dir_input = self.conf['general']['dir_input']
@@ -153,9 +153,16 @@ class Download(object):
             logging.info("Download : "+file_iso)
             # urllib.request.urlretrieve(url_iso, file_iso)
             rep = requests.get(url_iso, stream=True, allow_redirects=True)
+            total_length = int(rep.headers.get('content-length'))
+
             with open(file_iso, 'wb') as fd:
-                for chunk in rep.iter_content(chunk_size=128):
-                    fd.write(chunk)
+                #for chunk in rep.iter_content(chunk_size=128):
+                #    fd.write(chunk)
+
+                for chunk in progress.bar(rep.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
+                    if chunk:
+                        fd.write(chunk)
+                        fd.flush()
         else:
             logging.info("File exist, do nothing because already downloaded")
 
@@ -172,7 +179,7 @@ class Download(object):
 
         :param str iso: Name of iso used
 
-        >>> download.remove("debian-9.5.0-strech-amd64-netinst.iso")
+        >>> download.remove("debian-9.6.0-strech-amd64-netinst.iso")
         """
         file_iso = self.conf['general']['dir_input']+os.sep+iso
         if os.path.isfile(file_iso):

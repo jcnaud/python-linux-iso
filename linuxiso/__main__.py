@@ -27,7 +27,7 @@ def main():
     setup_logging()
     li = LinuxIso()
 
-    li.download.download("debian-9.5.0-strech-amd64-netinst.iso")
+    li.download.download("debian-9.6.0-strech-amd64-netinst.iso")
 
     context = {
         'ansible_user_name': 'ansible',

@@ -62,7 +62,7 @@ Now typical work flow is:
 Download debian ISO::
 
   cd example/1_debian_simple
-  ../../scripts/downloadcli --config settings.yaml --download debian-9.5.0-strech-amd64-netinst.iso
+  ../../scripts/downloadcli --config settings.yaml --download debian-9.6.0-strech-amd64-netinst.iso
 
 Custom this debian iso with recipe::
 

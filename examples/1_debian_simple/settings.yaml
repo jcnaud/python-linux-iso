@@ -5,19 +5,19 @@ general:
   dir_build: ""     # <temp directory where we build iso>
 
 download :
-  debian-9.5.0-strech-amd64-netinst.iso:
-    label: Debian 9.5.0 Strech amd64 Netinst
-    url_iso: https://cdimage.debian.org/debian-cd/9.5.0/amd64/iso-cd/debian-9.5.0-amd64-netinst.iso
+  debian-9.6.0-strech-amd64-netinst.iso:
+    label: Debian 9.6.0 Strech amd64 Netinst
+    url_iso: https://cdimage.debian.org/debian-cd/9.6.0/amd64/iso-cd/debian-9.6.0-amd64-netinst.iso
     hash:
       type: sha1
       sum: ed1cf0dea20831fb26661c10ca65340e3a3ea616
 
 custom :
   receipts:
-    Custom-FullAuto-Debian-9-strech-amd64-netinst-server: # <Unique recipe to custom iso>
+    Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso: # <Unique recipe to custom iso>
       label : Custom FullAuto Debian 9 Amd64 netinst server
       template : preseed-Debian-9-strech-amd64-srv.cfg.j2
-      iso_base : debian-9.5.0-strech-amd64-netinst.iso
+      iso_base : debian-9.6.0-strech-amd64-netinst.iso
       transfom : customDebian9soft
   contexts:
     myhostname.iso: # <Unique iso name>
