@@ -44,3 +44,5 @@ pip-log.txt
 # Editor
 /venv
 .vscode
+
+/default

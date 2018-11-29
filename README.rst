@@ -48,18 +48,35 @@ This programme is run with python:
 Getting started
 ===============
 
-A typical use
-Download debian ISO::
+Use configuration file, many of them are in **examples** directory.
+For example, use **examples/1_debian_simple/settings.yml**
 
-  ./scripts/downloadcli --download debian-9.5.0-strech-amd64-netinst.iso
+Change **General** parameters to avoid warning about using default directories:
+- general.dir_input: <directory where offical iso are>
+- general.dir_isocustom: <directory to put custom iso>
+- general.dir_build: <temp directory where we build iso>
 
-Custom this debian iso with recipe and conf::
 
-  ./scripts/customcli --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso --context ./example/debiansimple/context.yaml
+Now typical work flow is:
+
+Download debian ISO:
+
+  cd example/1_debian_simple
+  ../../scripts/downloadcli --config settings.yaml --download debian-9.5.0-strech-amd64-netinst.iso
+
+Custom this debian iso with recipe:
+
+  ../../scripts/customcli --config settings.yaml --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso --context ./example/debiansimple/context.yaml
 
 Deploy on virtualbox::
 
-TODO
+  ../../scripts/virtualboxcli --config settings.yaml --create Debian-amd64-standard --iso Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+
+
+You have more commands examples in **examples/1_debian_simple/commands.sh** and you can run it with:
+
+  cd example/1_debian_simple
+  ./commands.sh
 
 Or deploy on USB KEY (cf. documentation)
 
@@ -131,6 +148,7 @@ Install virtualenv::
 
   pip install module
   python setup.py install
+
 
 
 Run unit test

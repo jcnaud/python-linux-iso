@@ -4,6 +4,7 @@ import os
 import json
 import yaml
 from jsonschema import validate
+import os, errno
 
 
 def load_conf(confFile=None, confJson=None, confDict=None):
@@ -30,6 +31,29 @@ def load_conf(confFile=None, confJson=None, confDict=None):
         conf2 = json.loads(confJson)
     else:
         conf2 = confDict
+
+
+
+
+    def make_dir(conf, name):
+        """Create default dir if needed"""
+        dir_file = os.path.dirname(os.path.realpath(__file__))
+        dir_default_parent = os.path.join(dir_file, '..', '..', 'default')
+
+        if not conf['general'][name]:
+            dir_default = os.path.join(dir_default_parent, name)
+            try:
+                os.makedirs(dir_default)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise
+            conf['general'][name] = dir_default
+            logging.warning('No {} in settings.yaml, use default: {}'.format(name, dir_default))
+
+
+    # Create default dir if needed
+    for name in ['dir_input', 'dir_isocustom', 'dir_build']:
+        make_dir(conf2, name)
 
     conf = conf2
     assert conf, 'No configuration given'

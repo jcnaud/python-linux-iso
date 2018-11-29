@@ -1,7 +1,7 @@
 general:
-  dir_input: "/home/jnaud/var/iso"       # <directory where offical iso are>
-  dir_isocustom: "/home/jnaud/var/isocustom" # <directory to put custom iso>
-  dir_build: "/home/jnaud/var/build"     # <temp directory where we build iso>
+  dir_input: ""     # <directory where offical iso are>
+  dir_isocustom: "" # <directory to put custom iso>
+  dir_build: ""     # <temp directory where we build iso>
 
 download :
   debian-9.5.0-strech-amd64-netinst.iso:

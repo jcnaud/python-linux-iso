@@ -1,8 +1,8 @@
 
 geeral:
-  dir_input: "/home/jnaud/var/iso"       # <directory where offical iso are>
-  dir_isocustom: "/home/jnaud/var/isocustom" # <directory to put custom iso>
-  dir_build: "/home/jnaud/var/build"     # <temp directory where we build iso>
+  dir_input: ""       # <directory where offical iso are>
+  dir_isocustom: "" # <directory to put custom iso>
+  dir_build: ""     # <temp directory where we build iso>
 
 custom:
   contexts:
@@ -15,16 +15,15 @@ custom:
       user_password: mypassword     # <user password>
 
       # Optional : Add user ansible for automatic deployed
-      option_ansible:
-        ansible_user_name: ansible
-        ansible_authorized_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxxDwYctg2ngBkR5Xuzz3NxGIxqY88nOVP1SOnAz24B3LfCn7EzpEHvUC/Dw+fGk0CmFEQZMBFc7vjOTVT1kk2wajX241y+zHd92JA1NFdxa8T2kg5xlkXK5zAvs5a/PRmTcijnSK1ynw1t+uglLgpj3UkhZ3OScfc8xmb1SPy/8carF44HavNI0/KTXjyuBuM3b+9GXChwMLI2ZNQZ+RAEVH5nsaLwPqWVHCe6JID2ApIHNq4kC/V9pRGsH1w4tApVspCJ4lnSlMxVLbnS+zdJpV2/UpaFv64VG5KTbkeNYBwg7EE6KVI+bU93AMZYI75UeEPafWT/WESDW9K1RbH root@edugastp
-
+      # option_ansible:
+      #   ansible_user_name: ansible
+      #   ansible_authorized_keys:
+      #   - ssh-rsa xxxxxxxxxxxxxxxxxxxxxx
       # Optional : Add HTTP POST each time the OS start.
       #  The body contain the "ansible host status"
-      option_post_start_running:
-        url: localhost             # <url HTTP POST serveur>
-        port: 9001                 # <port HTTP POST serveur>
+      # option_post_start_running:
+      #   url: localhost             # <url HTTP POST serveur>
+      #   port: 9001                 # <port HTTP POST serveur>
 
 virtualbox:
   recipes :
