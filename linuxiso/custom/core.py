@@ -19,6 +19,7 @@ import logging         # for logging mode/level
 import argparse        # for command line usage (with options/arguments)
 
 import tempfile
+import yaml
 
 
 # Local Import
@@ -33,10 +34,14 @@ class Custom(object):
 
     def __init__(self, conf=None):
         self.conf = conf
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        conf_receipts = os.path.join(dir_path, 'receipts.yaml')
+        with open(conf_receipts, "r") as f:
+            self.receipts = yaml.safe_load(f)
 
     def list(self):
         """Get list of cusotm iso."""
-        return sorted(list(self.conf['custom'].keys()))
+        return sorted(list(self.conf['custom']['iso'].keys()))
 
     def status(self, iso):
         """
@@ -60,7 +65,7 @@ class Custom(object):
             result[iso] = self.status(iso)
         return result
 
-    def create(self, file_iso, context):
+    def create(self, file_iso):
         """
         Create custom iso/image from a other normal iso
         params file_iso : Name iso used
@@ -69,10 +74,13 @@ class Custom(object):
         #subprocess.run(["ls", "-l", "/dev/null"], stdout=subprocess.PIPE)
 
         # Deduce iso_input
+
         dir_input = self.conf['general']['dir_input']
-        receipts = self.conf['custom']['receipts']
-        iso_input = dir_input+os.sep+receipts[file_iso]['iso_base']
-        template_vars = self.conf['custom']['contexts'][context]
+        sub_conf = self.conf['custom']['iso'][file_iso]
+        receipt = self.receipts[sub_conf['receipt']]
+
+        iso_input = dir_input+os.sep+receipt['iso_base']
+        template_vars = sub_conf['vars']
         # Deduce iso output
         iso_ouput = os.path.join(self.conf['general']['dir_isocustom'], file_iso)
 
@@ -89,22 +97,23 @@ class Custom(object):
         #if not os.path.isdir(dir_build):
         #  os.rmdir(dir_build)
         try:
-            if receipts[file_iso]['transfom'] == 'customDebian9':
+            if receipt['transfom'] == 'customDebian9':
                 custom_debian_9(iso_input, iso_ouput, dir_build_tmp, template_vars)
-            elif receipts[file_iso]['transfom'] == 'customDebian9soft':
+            elif receipt['transfom'] == 'customDebian9soft':
                 custom_debian_9_soft(iso_input, iso_ouput, dir_build_tmp, template_vars)
             # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu16soft':
             #     custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build_tmp, context)
             # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu17soft':
             #     custom_ubuntu_17_soft(iso_input, iso_ouput, dir_build_tmp, context)
             else:
-                assert True, "Transformation not know"
+                assert True, "Transformation unknow"
         except Exception as e:
             raise Exception(e)
         finally:
             # Clean build directory
             if os.path.isdir(dir_build):
                 run_cmd('rm -r '+dir_build)
+            #pass
 
     def remove(self, iso):
         """

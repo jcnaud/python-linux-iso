@@ -10,23 +10,19 @@ download :
     url_iso: https://cdimage.debian.org/debian-cd/9.6.0/amd64/iso-cd/debian-9.6.0-amd64-netinst.iso
     hash:
       type: sha1
-      sum: ed1cf0dea20831fb26661c10ca65340e3a3ea616
+      sum: fe23b2849fe417081d3e4424f0cb8a4dd00d3a8e
 
-custom :
-  receipts:
-    Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso: # <Unique recipe to custom iso>
-      label : Custom FullAuto Debian 9 Amd64 netinst server
-      template : preseed-Debian-9-strech-amd64-srv.cfg.j2
-      iso_base : debian-9.6.0-strech-amd64-netinst.iso
-      transfom : customDebian9soft
-  contexts:
+custom:
+  iso:
     myhostname.iso: # <Unique iso name>
-      hostname: myhostname          # <Unique hostnamename>
-      domain: example.lan           # <Domaine name>
-      var_ntp_server: pool.ntp.org  # <NTP serveur> for time synchronisation
-      root_password: mypassword     # <root password>
-      user_name: myuser             # <user name>
-      user_password: mypassword     # <user password>
+      receipt: Custom-FullAuto-Debian-9-strech-amd64-netinst-server # Receipts listed in linux/custom/receipts
+      vars:
+        hostname: myhostname          # <Unique hostnamename>
+        domain: example.lan           # <Domaine name>
+        var_ntp_server: pool.ntp.org  # <NTP serveur> for time synchronisation
+        root_password: mypassword     # <root password>
+        user_name: myuser             # <user name>
+        user_password: mypassword     # <user password>
 
       # Optional : Add user ansible for automatic deployed
       # option_ansible:
@@ -36,17 +32,18 @@ custom :
 
       # Optional : Add HTTP POST each time the OS start.
       #  The body contain the "ansible host status"
-      option_post_start_running:
-        url: localhost             # <url HTTP POST serveur>
-        port: 9001                 # <port HTTP POST serveur>
+      # option_post_start_running:
+      #   url: localhost             # <url HTTP POST serveur>
+      #   port: 9001                 # <port HTTP POST serveur>
 
 virtualbox:
   vms:
-    myhostname:      # Vm name (advided to put the hostname)
+    myhostname:      # <Vm name>
+      install: myhostname.iso   # <iso install>
       os_type : 'Debian_64'     # <Id> of the liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
       file_disk_type : 'vmdk'   # <vdi | vmdk>
       ram : 1024              # <ram size Mo> multiple of x^2 : example 1*1024
       vram : 128              # <video ram size Mo>
       disk_size : 32768       # <disk size Mo> multiple of x^2 : example 8*1024
-      interface_name: 'wlan0'      # <interface> to connection with this vms
+      interface_name: ''      # <interface> to connection with this vm (eth0, wlan0, ...). if empty, auto detcct default interface
       interface_type: 'bridged'    # bridged | ...

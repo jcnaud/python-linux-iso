@@ -12,14 +12,17 @@ echo 'Download : download'
 echo 'Custom : list'
 ../../scripts/customcli --config settings.yaml --list
 
-echo 'Custom : status Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso'
-../../scripts/customcli --config settings.yaml --status Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+echo 'Custom : status myhostname.iso'
+../../scripts/customcli --config settings.yaml --status myhostname.iso
 
-echo 'Custom : create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso'
-../../scripts/customcli --config settings.yaml --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso --context myhostname
+echo 'Custom : create myhostname.iso'
+../../scripts/customcli --config settings.yaml --create myhostname.iso
 
 echo 'Virtualbox : list'
 ../../scripts/virtualboxcli --config settings.yaml --list
 
-echo 'Virtualbox : create uniquehostname'
-../../scripts/virtualboxcli --config settings.yaml --create Debian-amd64-standard --iso Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+echo 'Virtualbox : create myhostname'
+../../scripts/virtualboxcli --config settings.yaml --create myhostname
+
+echo 'Virtualbox : run myhostname'
+../../scripts/virtualboxcli --config settings.yaml --run myhostname

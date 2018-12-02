@@ -47,15 +47,29 @@ def custom_config(tmpdir):
             },
         },
         "custom": {
-            "test_custom_0.iso": {
-                "label": "Test custom 0",
-                "iso_base": "debian-9.6.0-strech-amd64-netinst.iso",
-                "transfom": "custom_test"
-            },
-            "test_custom_1.iso": {
-                "label": "Test custom 1",
-                "iso_base": "debian-9.6.0-strech-amd64-netinst.iso",
-                "transfom": "custom_test_1"
+            "iso": {
+                "test_custom_0.iso": {
+                    "receipt": "Custom-FullAuto-Debian-9-strech-amd64-netinst-server",
+                    "vars":{
+                        "hostname": "test_custom_0",      # <Unique hostnamename>
+                        "domain": "example.lan",           # <Domaine name>
+                        "var_ntp_server": "pool.ntp.org",  # <NTP serveur> for time synchronisation
+                        "root_password": "mypassword",     # <root password>
+                        "user_name": "myuser",             # <user name>
+                        "user_password": "mypassword"     # <user password>
+                    }
+                },
+                "test_custom_1.iso": {
+                    "receipt": "Custom-FullAuto-Debian-9-strech-amd64-netinst-server",
+                    "vars":{
+                        "hostname": "test_custom_1",      # <Unique hostnamename>
+                        "domain": "example.lan",           # <Domaine name>
+                        "var_ntp_server": "pool.ntp.org",  # <NTP serveur> for time synchronisation
+                        "root_password": "mypassword",     # <root password>
+                        "user_name": "myuser",             # <user name>
+                        "user_password": "mypassword"     # <user password>
+                    }
+                }
             }
         }
     }

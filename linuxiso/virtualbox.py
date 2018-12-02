@@ -104,7 +104,7 @@ class Virtualbox(object):
         logging.info('Run existing vm')
         run_cmd("VBoxManage startvm "+hostname)
 
-    def create(self, hostname, recipe, iso=None):
+    def create(self, vm_name):
         """Create virtualbox vm
         >>> from linuxiso.virtualbox import Virtualbox
         >>> virtualbox = Virtualbox(conf)
@@ -115,28 +115,35 @@ class Virtualbox(object):
         ...     iso=./path/iso/debian.iso)
         """
 
+        sub_conf = self.conf['virtualbox']['vms'][vm_name]
+        hostname = vm_name
+        dir_isocustom  = self.conf['general']['dir_isocustom']
+        if 'install' in sub_conf.keys() and sub_conf['install']:
+            iso = os.path.join(dir_isocustom, sub_conf['install'])
+        else:
+            iso = None
+
         logging.info('Create virtualbox vm')
         l_vm = self.list_vms()
 
         isexist = [x['name'] for x in l_vm if hostname == x['name']]
         assert isexist == [], "Error : la vm '"+hostname+"' existe déjà"
 
-        msg = "Error : la recipe '"+recipe+"' n'existe pas"
-        assert recipe in self.conf['virtualbox']['recipes'].keys(), msg
+        # msg = "Error : la recipe '"+recipe+"' n'existe pas"
+        # assert recipe in self.conf['virtualbox']['recipes'].keys(), msg
 
         #        dir1 = conf['disk-dir']+'/'+conf['hostname']
         # assert(not os.path.exists(dir1)), "Le dossier "+dir1+" existe déjà !"
 
         # dir_iso = self.conf['general']['dir_input']
         # dir_isocustom  = self.conf['general']['dir_isocustom']
-        recipe = self.conf['virtualbox']['recipes'][recipe]
-        os_type = recipe['os_type']
-        file_disk_type = recipe['file_disk_type']
-        ram = str(recipe['ram'])
-        vram = str(recipe['vram'])
-        disk_size = recipe['disk_size']
-        interface_name = recipe['interface_name']
-        interface_type = recipe['interface_type']
+        os_type = sub_conf['os_type']
+        file_disk_type = sub_conf['file_disk_type']
+        ram = str(sub_conf['ram'])
+        vram = str(sub_conf['vram'])
+        disk_size = sub_conf['disk_size']
+        interface_name = sub_conf['interface_name']
+        interface_type = sub_conf['interface_type']
 
         dir_vm = self.get_machine_folder()
         if not os.path.isdir(dir_vm):

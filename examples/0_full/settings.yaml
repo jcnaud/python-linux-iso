@@ -46,30 +46,17 @@ download :
       type: sha256
       sum: 3271b244734286d99aeba8fa043b6634cad488d211583814a2018fc14fdca313
 
-custom :
-  Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso :
-    label : Custom FullAuto Debian 9 Amd64 netinst server
-    template : preseed-Debian-9-strech-amd64-srv.cfg.j2
-    iso_base : debian-9.6.0-strech-amd64-netinst.iso
-    transfom : customDebian9soft
-
-  Custom-FullAuto-Debian-9-strech-amd64-netinst-server-proliant.iso :
-    label : Custom FullAuto Debian 9 Amd64 netinst server for proliant jcnaud
-    template : preseed-Debian-9-strech-amd64-srv-proliant.cfg.j2
-    iso_base : debian-9.6.0-strech-amd64-netinst.iso
-    transfom : customDebian9soft
-
-  Custom-FullAuto-Ubuntu-16-LTS-Xenial_Xerus-amd64-desktop.iso :
-    label : Custom FullAuto Ubuntu 16 Amd64 Desktop
-    template : kickstart-Ubuntu-16-xenial-amd-64-desktop.cfg.j2
-    iso_base : ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-server.iso
-    transfom : customUbuntu16soft
-
-  Custom-FullAuto-Ubuntu-17-Artful_Aardvark-amd64-desktop.iso :
-    label : Custom FullAuto Ubuntu 16 Amd64 Desktop
-    template : kickstart-Ubuntu-17-artful-amd-64-desktop.cfg.j2
-    iso_base : ubuntu-17.10.1-Artful_Aardvark-amd64-server.iso
-    transfom : customUbuntu17soft
+custom:
+  iso:
+    myhostname.iso: # <Unique iso name>
+      receipt: Custom-FullAuto-Debian-9-strech-amd64-netinst-server # Receipts listed in linux/custom/receipts
+      vars:
+        hostname: myhostname          # <Unique hostnamename>
+        domain: example.lan           # <Domaine name>
+        var_ntp_server: pool.ntp.org  # <NTP serveur> for time synchronisation
+        root_password: mypassword     # <root password>
+        user_name: myuser             # <user name>
+        user_password: mypassword     # <user password>
 
 virtualbox:
   vms:
@@ -80,7 +67,7 @@ virtualbox:
       ram : 1024              # <ram size Mo> multiple of x^2 : example 1*1024
       vram : 128              # <video ram size Mo>
       disk_size : 32768       # <disk size Mo> multiple of x^2 : example 8*1024
-      interface_name: 'wlan0'      # <interface> to connection with this vms
+      interface_name: ''      # <interface> to connection with this vms
       interface_type: 'bridged'    # bridged | ...
 
     Debian-amd64-raid:
@@ -91,5 +78,5 @@ virtualbox:
       vram : 128              # mémoire video
       disk_size : [32768,32768]       # multiple de x^2 : exemple 8*1024
 
-      interface_name: 'wlan0'      # Votre interface de connection externe donnée par /sbin/ifconfig
+      interface_name: ''      # Votre interface de connection externe donnée par /sbin/ifconfig
       interface_type: 'bridged'    # bridged | ...

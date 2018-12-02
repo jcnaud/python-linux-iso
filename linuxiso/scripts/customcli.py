@@ -66,10 +66,6 @@ netinst-server.iso
         "-c", "--create",
         help="create custom iso/image",
         metavar="ISO_NAME")
-    parser.add_argument(
-        "-t", "--context",
-        help="specify context for the creation",
-        metavar="CONTEXT")
 
     group_vq = parser.add_mutually_exclusive_group()
     group_vq.add_argument(
@@ -113,10 +109,7 @@ def main(args):
             result = custom.status_all()
             print(json.dumps(result, indent=4, sort_keys=True))
         elif args.create:         # Create one custom iso/image
-            if args.context:
-                custom.create(args.create, args.context)
-            else:
-                print('no context specidied')
+            custom.create(args.create)
         elif args.remove:         # Remove one customiso/image
             custom.remove(args.remove)
         elif args.remove_all:     # Remove all custom iso/image

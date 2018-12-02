@@ -1,0 +1,20 @@
+
+Custom-FullAuto-Debian-9-strech-amd64-netinst-server:
+  template: preseed-Debian-9-strech-amd64-srv.cfg.j2
+  iso_base: debian-9.6.0-strech-amd64-netinst.iso
+  transfom: customDebian9soft
+
+Custom-FullAuto-Debian-9-strech-amd64-netinst-server-raid:
+  template: preseed-Debian-9-strech-amd64-srv-raid.cfg.j2
+  iso_base: debian-9.6.0-strech-amd64-netinst.iso
+  transfom: customDebian9soft
+
+Custom-FullAuto-Ubuntu-16-LTS-Xenial_Xerus-amd64-desktop:
+  template : kickstart-Ubuntu-16-xenial-amd-64-desktop.cfg.j2
+  iso_base : ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-server.iso
+  transfom : customUbuntu16soft
+
+Custom-FullAuto-Ubuntu-17-Artful_Aardvark-amd64-desktop:
+  template : kickstart-Ubuntu-17-artful-amd-64-desktop.cfg.j2
+  iso_base : ubuntu-17.10.1-Artful_Aardvark-amd64-server.iso
+  transfom : customUbuntu17soft

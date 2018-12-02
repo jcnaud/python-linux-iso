@@ -34,6 +34,7 @@ This programme have **tree** modules:
 
 Actually, you can custom this offical ISO:
  - debian 9
+ - debian 9 with raid 1 (UNDER DEVELOPPEMENT)
  - unbuntu 16 (UNDER DEVELOPPEMENT)
  - unbuntu 17 (UNDER DEVELOPPEMENT)
 
@@ -51,13 +52,13 @@ Getting started
 Use configuration file, many of them are in **examples** directory.
 For example, use **examples/1_debian_simple/settings.yml**
 
-Change **General** parameters to avoid warning about using default directories:
-- general.dir_input: <directory where offical iso are>
-- general.dir_isocustom: <directory to put custom iso>
-- general.dir_build: <temp directory where we build iso>
+Change some parameters to avoid warning.:
+ - general.dir_input: <directory where offical iso are (if empty, use default/dir_input directory)>
+ - general.dir_isocustom: <directory to put custom iso (if empty, use default/dir_isocustom directory)>
+ - general.dir_build: <temp directory where we build iso (if empty, use default/dir_build directory)>
+ - virutalbox.vms.myhostname.interface_name: <interface name used by virtualbox to connect the vm (if empty auto detect default interface)>
 
-
-Now typical work flow is:
+Now typical work flow is write in **examples/1_debian_simple/commands.sh**:
 
 Download debian ISO::
 
@@ -66,11 +67,12 @@ Download debian ISO::
 
 Custom this debian iso with recipe::
 
-  ../../scripts/customcli --config settings.yaml --create Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso --context ./example/debiansimple/context.yaml
+  ../../scripts/customcli --config settings.yaml --create myhostname.iso
 
-Deploy on virtualbox::
+Deploy on virtualbox and run it::
 
-  ../../scripts/virtualboxcli --config settings.yaml --create Debian-amd64-standard --iso Custom-FullAuto-Debian-9-strech-amd64-netinst-server.iso
+  ../../scripts/virtualboxcli --config settings.yaml --create myhostname
+  ../../scripts/virtualboxcli --config settings.yaml --run myhostname
 
 
 You have more commands examples in **examples/1_debian_simple/commands.sh** and you can run it with::
@@ -120,7 +122,7 @@ Project structure::
 Installation
 ============
 
-This programme works only on **linux distribution** because he use bash command.
+This programme works only on **linux distribution**.
 
 To avoid using root access, we need some tools for mount, unmount and build ISO.
 
@@ -129,7 +131,13 @@ Linux package
 For example, on debian, install theses paquages
 
 ```bash
-sudo apt-get install xorriso virtualbox
+sudo apt-get install fuseiso isolinux xorriso virtualbox
+```
+
+**optional**: You can also install virtualbox gui
+
+```bash
+sudo apt-get install virtualbox-qt
 ```
 
 Python
@@ -145,10 +153,6 @@ Install virtualenv::
   source venv/bin/activate
   pip install -t requirements.txt
   deactivate
-
-  pip install module
-  python setup.py install
-
 
 
 Run unit test
@@ -204,5 +208,8 @@ Run tests with coverage::
 
 Links
 =====
+Usefull link to understand Iso custumisation
+
 Debian wiki for Raspbian: https://wiki.debian.org/RaspberryPi/qemu-user-static
-Mount all king of *.img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/
+
+Mount all kind of *.img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/

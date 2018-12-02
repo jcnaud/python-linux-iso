@@ -6,6 +6,7 @@ import sys
 import argparse
 import logging
 import json
+import textwrap
 
 # Local import
 # DIR_PWD = os.path.dirname(os.path.realpath('__file__'))
@@ -15,7 +16,7 @@ from linuxiso.ressources.tools import load_conf  # noqa
 
 
 def argument_parser():
-    parser_c = argparse.ArgumentParser("create", add_help=False)
+    #parser_c = argparse.ArgumentParser("create", add_help=False)
 
     # parser = argparse.ArgumentParser(
     #     prog='downloadcli',
@@ -28,19 +29,34 @@ def argument_parser():
     #             ./downloadcli --status debian-9.6.0-strech-amd64-netinst.iso
     #             ./downloadcli --download debian-9.6.0-strech-amd64-netinst.iso
     #         '''))
+    #
+    # parser_c.add_argument(
+    #     "-i", "--iso",
+    #     help="iso/image to mount",
+    #     metavar="ISO_NAME")
+    # parser_c.add_argument(
+    #     "-e", "--recipe",
+    #     help="recipe",
+    #     metavar="RECIPE")
 
-    parser_c.add_argument(
-        "-i", "--iso",
-        help="iso/image to mount",
-        metavar="ISO_NAME")
-    parser_c.add_argument(
-        "-e", "--recipe",
-        help="recipe",
-        metavar="RECIPE")
+    # parser = argparse.ArgumentParser(
+    #     description='Program manage virtualbox VM',
+    #     parents=[parser_c])
+
 
     parser = argparse.ArgumentParser(
-        description='Program manage virtualbox VM',
-        parents=[parser_c])
+        prog='virtualboxcli',
+        description='Program manage virtualbox',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent('''\
+            Example of standard usage:
+
+                ./virtualboxcli --list
+                ./virtualboxcli --create myhostname
+            '''))
+
+    # parser = argparse.ArgumentParser(
+    #     description='Program manage virtualbox VM')
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
@@ -110,10 +126,7 @@ def main(args):
             # print(json.dumps(result, indent=4))
             print(json.dumps(sorted(list(result.keys())), indent=4))
         elif args.create:         # Create one VM
-            virtualbox.create(
-                hostname=args.create,
-                recipe=args.recipe,
-                iso=args.iso)
+            virtualbox.create(args.create)
         elif args.run:            # Run one existing VM
             virtualbox.run(args.run)
         elif args.remove:         # Remoce one existing VM

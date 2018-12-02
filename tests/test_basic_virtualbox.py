@@ -4,7 +4,6 @@
 import os
 import sys
 import pytest
-import pyroute2
 import uuid
 
 try:
@@ -29,10 +28,6 @@ def custom_config(tmpdir):
     test2 = dirIso.join("test_2.iso")
     test2.write("data on test_2")
 
-    # Get default iface name
-    ip = pyroute2.IPDB()
-    default_iface = ip.interfaces[ip.routes['default']['oif']]['ifname']
-    ip.release()
 
     customConfig = {
         "general":{
@@ -43,19 +38,21 @@ def custom_config(tmpdir):
         "download": {},
         "custom": {},
         "virtualbox": {
-            "recipes": {
-                "Debian-amd64-standard": {
+            "vms": {
+                "test_myhostname": {
+                    #'install': 'test_myhostname.iso',
                     'os_type': 'Debian_64',   # os type. => self.list_ostypes()
                     'file_disk_type': 'vmdk',  # vdi or vmdk
                     'ram': 1024,             # multiple of x^2 : example 1*1024
                     'vram': 128,             # video memory
                     'disk_size': 32768,      # multiple of x^2 : example 8*1024
-                    'interface_name': default_iface,  # network interface used
+                    'interface_name': '',  # network interface used
                     'interface_type': 'bridged'
                 }
             }
         }
     }
+
     return customConfig
 
 
@@ -87,10 +84,7 @@ def test_get_machine_folder(custom_config):
 def test_create_and_remove(custom_config):
     conf = load_conf(confDict=custom_config)  # Custom configuration
     virtualbox = Virtualbox(conf=conf)
-    hostname = 'test_'+str(uuid.uuid4())
 
-    virtualbox.create(
-        hostname=hostname,
-        recipe='Debian-amd64-standard')
+    virtualbox.create('test_myhostname')
 
-    virtualbox.remove(hostname)
+    virtualbox.remove('test_myhostname')

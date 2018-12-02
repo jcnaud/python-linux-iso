@@ -26,9 +26,12 @@ def custom_config_file(tmpdir):
     test2.write("data on test_2")
 
     # Get default iface name
-    ip = pyroute2.IPDB()
-    default_iface = ip.interfaces[ip.routes['default']['oif']]['ifname']
-    ip.release()
+    # ip = pyroute2.IPDB()
+    # try:
+    #     default_iface = ip.interfaces[ip.routes['default']['oif']]['ifname']
+    # finally: # Pyroute2 hack: https://github.com/svinota/pyroute2/issues/553
+    #     if ip._stop:
+    #         ip.release()
 
     customConfig = {
         "general":{
@@ -39,14 +42,14 @@ def custom_config_file(tmpdir):
         "download": {},
         "custom": {},
         "virtualbox": {
-            "recipes": {
-                "Debian-amd64-standard": {
+            "vms": {
+                "myhostname": {
                     'os_type': 'Debian_64',   # os type. => self.list_ostypes()
                     'file_disk_type': 'vmdk',  # vdi or vmdk
                     'ram': 1024,             # multiple of x^2 : example 1*1024
                     'vram': 128,             # video memory
                     'disk_size': 32768,      # multiple of x^2 : example 8*1024
-                    'interface_name': default_iface,  # network interface used
+                    'interface_name': '',  # network interface used
                     'interface_type': 'bridged'
                 }
             }

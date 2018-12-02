@@ -5,6 +5,8 @@ import json
 import yaml
 from jsonschema import validate
 import os, errno
+import pyroute2
+
 
 
 def load_conf(confFile=None, confJson=None, confDict=None):
@@ -54,6 +56,19 @@ def load_conf(confFile=None, confJson=None, confDict=None):
     # Create default dir if needed
     for name in ['dir_input', 'dir_isocustom', 'dir_build']:
         make_dir(conf2, name)
+
+    if 'virtualbox' in conf2.keys():
+        if 'vms' in conf2['virtualbox'].keys():
+            for name, vm in conf2['virtualbox']['vms'].items():
+                if not vm['interface_name']:
+                    ip = pyroute2.IPDB()
+                    try:
+                        default_iface = ip.interfaces[ip.routes['default']['oif']]['ifname']
+                    finally: # Pyroute2 hack: https://github.com/svinota/pyroute2/issues/553
+                        if ip._stop:
+                            ip.release()
+                    conf2['virtualbox']['vms'][name]['interface_name'] = default_iface
+                    logging.warning('No interface_name in settings.yaml, use autodetect : {}'.format(default_iface))
 
     conf = conf2
     assert conf, 'No configuration given'
