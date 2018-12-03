@@ -111,8 +111,8 @@ class Custom(object):
             raise Exception(e)
         finally:
             # Clean build directory
-            if os.path.isdir(dir_build):
-                run_cmd('rm -r '+dir_build)
+            if os.path.isdir(dir_build_tmp):
+                run_cmd('rm -r '+dir_build_tmp)
             #pass
 
     def remove(self, iso):
