@@ -4,11 +4,11 @@ Python linux iso
 
 .. inclusion-marker-do-not-remove
 
-.. image:: https://readthedocs.org/projects/python-linux-iso/badge/?version=develop
-    :target: https://python-linux-iso.readthedocs.io/en/latest/?badge=develop
+.. image:: https://readthedocs.org/projects/python-linux-iso/badge/?version=stable
+    :target: https://python-linux-iso.readthedocs.io/en/stable/
     :alt: Documentation Status
 
-.. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=develop
+.. image:: https://travis-ci.org/jcnaud/python-linux-iso.svg?branch=master
     :target: https://travis-ci.org/jcnaud/python-linux-iso
 
 
@@ -58,12 +58,12 @@ Linux package
 -------------
 For example, on debian, install theses paquages::
 
-  sudo apt-get install fuseiso isolinux xorriso virtualbox  
-  
+  sudo apt-get install fuseiso isolinux xorriso virtualbox
+
 
 **optional**: You can also install virtualbox gui::
 
-  sudo apt-get install virtualbox-qt  
+  sudo apt-get install virtualbox-qt
 
 
 Python

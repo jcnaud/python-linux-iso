@@ -1,20 +1,19 @@
 
 general:
-  dir_input: ""       # <directory where offical iso are>
-  dir_isocustom: "" # <directory to put custom iso>
-  dir_build: ""     # <temp directory where we build iso>
+  dir_input: ""     # <directory where offical iso are (if empty, use default/dir_input directory)>
+  dir_isocustom: "" # <directory to put custom iso (if empty, use default/dir_isocustom directory)>
+  dir_build: ""     # <temp directory where we build iso (if empty, use default/dir_build directory)>
 
 download :
-  debian-9.6.0-strech-amd64-netinst.iso:
-    label: Debian 9.6.0 Strech amd64 Netinst
+  debian-9.6.0-strech-amd64-netinst.iso:  # <iso unique name>
     url_iso: https://cdimage.debian.org/debian-cd/9.6.0/amd64/iso-cd/debian-9.6.0-amd64-netinst.iso
-    hash:
+    hash: # Optional
       type: sha1
       sum: fe23b2849fe417081d3e4424f0cb8a4dd00d3a8e
 
 custom:
   iso:
-    myhostname.iso: # <Unique iso name>
+    myhostname.iso:  # <custom iso unique name>
       receipt: Custom-FullAuto-Debian-9-strech-amd64-netinst-server # Receipts listed in linux/custom/receipts
       vars:
         hostname: myhostname          # <Unique hostnamename>
@@ -40,10 +39,10 @@ virtualbox:
   vms:
     myhostname:      # <Vm name>
       install: myhostname.iso   # <iso install>
-      os_type : 'Debian_64'     # <Id> of the liste : VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
-      file_disk_type : 'vmdk'   # <vdi | vmdk>
+      os_type : 'Debian_64'     # <Id> of the list: VBoxManage list ostypes |egrep '^ID:'|awk '{print $2}'
+      file_disk_type : 'vmdk'   # <vdi or vmdk>
       ram : 1024              # <ram size Mo> multiple of x^2 : example 1*1024
       vram : 128              # <video ram size Mo>
       disk_size : 32768       # <disk size Mo> multiple of x^2 : example 8*1024
-      interface_name: ''      # <interface> to connection with this vm (eth0, wlan0, ...). if empty, auto detcct default interface
-      interface_type: 'bridged'    # bridged | ...
+      interface_name: ''      # <interface name used by virtualbox to connect the vm (if empty auto detect default interface)>
+      interface_type: 'bridged'    # <bridged or ..>
