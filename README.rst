@@ -46,41 +46,6 @@ This programme is run with python:
  - 3.6 (UNDER DEVELOPPEMENT)
  - 3.5
 
-
-Installation
-============
-
-This programme works only on **linux distribution**.
-
-To avoid using root access, we need some tools for mount, unmount and build ISO.
-
-Linux package
--------------
-For example, on debian, install theses paquages::
-
-  sudo apt-get install fuseiso isolinux xorriso virtualbox  
-  
-
-**optional**: You can also install virtualbox gui::
-
-  sudo apt-get install virtualbox-qt  
-
-
-Python
-------
-A strongly advice you to use **virtualenv**.
-
-Install virtualenv::
-
-  sudo apt-get install virtualenv
-
-  cd python-linux-iso/
-  virtualenv -p /usr/bin/python3 venv
-  source venv/bin/activate
-  pip install -r requirements.txt
-  deactivate
-
-
 Getting started
 ===============
 
@@ -97,7 +62,7 @@ Now typical work flow is write in **examples/1_debian_simple/commands.sh**:
 
 Download debian ISO::
 
-  cd examples/1_debian_simple
+  cd example/1_debian_simple
   ../../scripts/downloadcli --config settings.yaml --download debian-9.6.0-strech-amd64-netinst.iso
 
 Custom this debian iso with recipe::
@@ -152,6 +117,42 @@ Project structure::
   ├── requirements-dev.txt # Python dependencies for develop (build doc, run tests, ...)
   ├── requirements.txt     # Python dependencies for production
   └── setup.py
+
+
+Installation
+============
+
+This programme works only on **linux distribution**.
+
+To avoid using root access, we need some tools for mount, unmount and build ISO.
+
+Linux package
+-------------
+For example, on debian, install theses paquages
+
+```bash
+sudo apt-get install fuseiso isolinux xorriso virtualbox
+```
+
+**optional**: You can also install virtualbox gui
+
+```bash
+sudo apt-get install virtualbox-qt
+```
+
+Python
+------
+A strongly advice you to use **virtualenv**.
+
+Install virtualenv::
+
+  sudo apt-get install virtualenv
+
+  cd python-linux-iso/
+  virtualenv -p /usr/bin/python3 venv
+  source venv/bin/activate
+  pip install -t requirements.txt
+  deactivate
 
 
 Run unit test
