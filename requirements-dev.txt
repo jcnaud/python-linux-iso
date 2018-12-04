@@ -4,6 +4,7 @@ requests
 pyhttp
 python-json-logger
 clint
+pyroute2
 
 # Documentaiton
 sphinx
