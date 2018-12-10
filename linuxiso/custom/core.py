@@ -28,6 +28,9 @@ from linuxiso.custom.receipts.debian_9 import (
     custom_debian_9,
     custom_debian_9_soft)
 
+from linuxiso.custom.receipts.ubuntu_18 import (
+    custom_ubuntu_18)
+
 
 class Custom(object):
     """Custom iso"""
@@ -90,7 +93,6 @@ class Custom(object):
             os.makedirs(dir_build)
         dir_build_tmp = tempfile.mkdtemp(dir=dir_build)
 
-
         # (iso_input, iso_ouput, dir_build_tmp, context)
 
         # Clean Build directory "Dangerous"
@@ -105,15 +107,17 @@ class Custom(object):
             #     custom_ubuntu_16_soft(iso_input, iso_ouput, dir_build_tmp, context)
             # elif self.conf['custom'][file_iso]['transfom'] == 'customUbuntu17soft':
             #     custom_ubuntu_17_soft(iso_input, iso_ouput, dir_build_tmp, context)
+            elif receipt['transfom'] == 'customUbuntu18':
+                custom_ubuntu_18(iso_input, iso_ouput, dir_build_tmp, receipt, template_vars)
             else:
-                assert True, "Transformation unknow"
-        except Exception as e:
-            raise Exception(e)
+                assert False, "Transformation unknow"
+        # except Exception as e:
+        #     raise Exception(e)
         finally:
             # Clean build directory
             if os.path.isdir(dir_build_tmp):
-                run_cmd('rm -r '+dir_build_tmp)
-            #pass
+                #run_cmd('rm -r '+dir_build_tmp)
+                pass
 
     def remove(self, iso):
         """

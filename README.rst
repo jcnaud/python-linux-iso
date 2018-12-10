@@ -212,3 +212,7 @@ Usefull link to understand Iso custumisation
 Debian wiki for Raspbian: https://wiki.debian.org/RaspberryPi/qemu-user-static
 
 Mount all kind of *.img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/
+
+kickstart ubuntu : https://help.ubuntu.com/community/KickstartCompatibility
+
+preseed ubuntu : https://help.ubuntu.com/lts/installation-guide/s390x/apbs04.html

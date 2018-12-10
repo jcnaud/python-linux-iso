@@ -12,9 +12,14 @@ Custom-FullAuto-Debian-9-strech-amd64-netinst-server-raid:
 Custom-FullAuto-Ubuntu-16-LTS-Xenial_Xerus-amd64-desktop:
   template : kickstart-Ubuntu-16-xenial-amd-64-desktop.cfg.j2
   iso_base : ubuntu-16.04.4-LTS-Xenial_Xerus-amd64-server.iso
-  transfom : customUbuntu16soft
+  transfom : customUbuntu16
 
 Custom-FullAuto-Ubuntu-17-Artful_Aardvark-amd64-desktop:
   template : kickstart-Ubuntu-17-artful-amd-64-desktop.cfg.j2
   iso_base : ubuntu-17.10.1-Artful_Aardvark-amd64-server.iso
-  transfom : customUbuntu17soft
+  transfom : customUbuntu17
+
+Custom-FullAuto-Ubuntu-18-Bionic-Beaver-amd64-cd-server:
+  template : preseed-Ubuntu-18-bionic-beaver-amd-64-server.cfg.j2
+  iso_base : ubuntu-18-bionic-beaver-amd64-cd-server.iso
+  transfom : customUbuntu18
