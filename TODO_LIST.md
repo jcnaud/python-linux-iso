@@ -286,3 +286,18 @@ sudo losetup -d /dev/loop0
     sudo mount -t proc none /mnt/rasp-pi-rootfs/proc
     sudo mount -o bind /sys /mnt/rasp-pi-rootfs/sys
     sudo chroot /mnt/rasp-pi-rootfs
+
+
+# ===============================================================
+### Debug preseed tricks
+
+
+In the future, if you face such an issue and you're not lucky enough to come across an answer that works, just go through the setup manually. On your new system, install the debconf-utils package:
+
+ sudo apt-get install debconf-utils
+
+This gives you access to the debconf-get-selections command. You can use it to generate a preseed configuration:
+
+sudo debconf-get-selections --installer > preseed.cfg
+
+You should note that, as recommended in the Debian Wiki you should not use the preseed.cfg file above as is, rather search for the entries you need (grep -i language preseed.cfg?) and add them to your own preseed file.
