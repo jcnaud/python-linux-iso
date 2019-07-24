@@ -3,6 +3,7 @@
 
 import os
 import sys
+from sys import argv
 import argparse
 import logging
 import json
@@ -13,6 +14,8 @@ import textwrap
 # sys.path.append(os.path.join(DIR_PWD, ".."))
 from linuxiso.custom.core import Custom
 from linuxiso.ressources.tools import load_conf
+
+#def get_args():
 
 
 def argument_parser():
@@ -81,8 +84,15 @@ netinst-server.iso
     return parser
 
 
-def main(args):
+def main(args=None):
     """Parsing command line options/argument for custom module"""
+    if args is None:
+        args = sys.argv[1:]
+    print(args)
+
+    parser = argument_parser()
+    args = parser.parse_args()
+
     if args:
         # Manage "verbose" and "quiet" options
         if args.verbose == 0:
@@ -117,12 +127,9 @@ def main(args):
         else:
             parser.print_help()
 
-
-if __name__ == "__main__":
-    """Entry point for command ligne usage (with options/arguments)"""
-    parser = argument_parser()
-    args = parser.parse_args()
-    main(args)
+#if __name__ == "__main__":
+#    """Entry point for command ligne usage (with options/arguments)"""
+#    main()
 
 # TODO: option s create and context
 #

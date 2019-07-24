@@ -34,6 +34,7 @@ This programme have **tree** modules:
 
 Actually, you can custom this offical ISO:
  - debian 9
+ - unbuntu 18 server
  - debian 9 with raid 1 (UNDER DEVELOPPEMENT)
  - unbuntu 16 (UNDER DEVELOPPEMENT)
  - unbuntu 17 (UNDER DEVELOPPEMENT)
@@ -112,7 +113,7 @@ Deploy on virtualbox and run it::
 
 You have more commands examples in **examples/1_debian_simple/commands.sh** and you can run it with::
 
-  cd example/1_debian_simple
+  cd examples/1_debian_simple
   ./commands.sh
 
 Or deploy on USB KEY (cf. documentation)
@@ -181,15 +182,53 @@ Secondly, compile the documentation with sphinx::
 
 The entry point of the documentation is in **docs/build/html/index.html**.
 
+Install package from source
+================================
 
-Compile distribution package (UNDERDEVELOPPEMENT)
-=================================================
+Build  this source and install it::
+
+  python setup.py build
+  python setup.py install
+
+Now the package is installed, you have also access of bin :
+- downloadcli
+- customcli
+- virtualboxcli
+
+The build command create **build** directory. You can delete it with::
+
+  rm -r build
+
+You can uninstall this pachage with::
+
+  pip uninstall linuxiso
+
+
+Compile distribution package
+============================
 
 Compile distribution package from source::
 
   python setup.py sdist
 
-The distribution package are in the **dist** directory
+The distribution package are in the **dist** directory.
+
+Moreover, you can see the new **LinuxIso.egg-info** directory containing info and included in the distribution package.
+For more information, see the official documentation: https://docs.python.org/3/distutils/sourcedist.html
+
+Delete generated files::
+
+  rm -r LinuxIso.egg-info
+  rm -r dist
+
+
+
+You can install this eeg file with::
+  python -m easy_install ./dist/LinuxIso*gg
+
+You can uninstall this pachage with::
+
+  pip uninstall linuxiso
 
 
 Run tests with coverage
@@ -211,7 +250,7 @@ Usefull link to understand Iso custumisation
 
 Debian wiki for Raspbian: https://wiki.debian.org/RaspberryPi/qemu-user-static
 
-Mount all kind of *.img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/
+Mount all kind of .img: https://www.suse.com/c/accessing-file-systems-disk-block-image-files/
 
 kickstart ubuntu : https://help.ubuntu.com/community/KickstartCompatibility
 

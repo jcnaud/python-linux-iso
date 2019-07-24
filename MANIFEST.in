@@ -1,6 +1,13 @@
-# Informational files
-#TODO include README.rst
+# MANIFEST : include file in source package dist (but not in wheel)
+
+# Include the license
 include LICENSE.txt
+
+# Include the README
+include README.rst
+
+# Include json in source
+include linuxiso/ressources/conf_jsonschema.json
 
 # Include docs and tests but not docs/build
 graft docs
@@ -9,10 +16,11 @@ graft tests
 
 # Exclude any compile Python files
 global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .pytest_cache
 
 # Setup-related things
 #TODO include pavement.py
 include requirements-dev.txt
 include requirements.txt
-#TODO include setup.py
 #TODO include tox.ini

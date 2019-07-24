@@ -12,11 +12,12 @@ from linuxiso.scripts.customcli import argument_parser, main  # noqa
 
 if __name__ == "__main__":
     """Entry point for command ligne usage (with options/arguments)"""
-    parser = argument_parser()
-    args = parser.parse_args()
-    main(args)
+    #parser = argument_parser()
+    #args = parser.parse_args()
+    #main(args)
+    main()
 
-# TODO: option s create and context
+# TODO: options create and context
 #
 # class CreateAction(argparse.Action):
 #     def __call__(self, parser, namespace, values, option_string=None):

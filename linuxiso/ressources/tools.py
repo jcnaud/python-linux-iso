@@ -34,7 +34,8 @@ def load_conf(confFile=None, confJson=None, confDict=None):
     else:
         conf2 = confDict
 
-
+    print("-----", conf2)
+    assert conf2, 'No configuration given'
 
 
     def make_dir(conf, name):
@@ -71,7 +72,6 @@ def load_conf(confFile=None, confJson=None, confDict=None):
                     logging.warning('No interface_name in settings.yaml, use autodetect : {}'.format(default_iface))
 
     conf = conf2
-    assert conf, 'No configuration given'
 
     # print(json.dumps(conf, indent=4))
     with open(conf_schema, "r") as f:

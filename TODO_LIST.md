@@ -27,7 +27,13 @@
   - [x] Deploy on readthedoc.io
 
 - [x] LICENSE
-- [ ] Packaging python
+- [x] Packaging python
+
+
+- [ ] Run on Windows 10
+  - [ ] Find method to do it
+- [ ] Run on MAC OSX
+  - [ ] Find method to do it
 
 ### Download
 - [x] Download via wget like
@@ -48,3 +54,11 @@
 ### Virtualbox
 - [x] Create/Run new VM with custom iso
 - [ ] Option for configuring network
+
+
+### ISSUE:
+- [ ] Disable no configuration given when program start without options
+- [ ] Add config file option by default in commands help example.
+
+### MINOR 
+- [ ] Change scripts name.
